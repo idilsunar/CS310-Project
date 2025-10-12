@@ -24,6 +24,6 @@ The app is designed with simplicity and speed in mind—ideal for university stu
 ## Course Information
 
 **Course:** CS 310  
-**Project:** HabitFlow - Final Project Proposal  
+**Project:** HabitFlow -  Project Proposal  
 **Platform:** Flutter (mobile)  
 **Local Storage:** Hive / SharedPreferences  
