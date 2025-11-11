@@ -27,3 +27,6 @@ The app is designed with simplicity and speed in mind—ideal for university stu
 **Project:** HabitFlow -  Project Proposal  
 **Platform:** Flutter (mobile)  
 **Local Storage:** Hive / SharedPreferences  
+
+
+**Screen Designs:** https://miro.com/app/board/uXjVJus1KfA=/
