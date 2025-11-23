@@ -1,0 +1,695 @@
+import 'package:flutter/material.dart';
+
+
+// ONBOARDING SCREEN 1
+
+class OnboardingPage1 extends StatelessWidget {
+  const OnboardingPage1({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Stack(
+          children: [
+            // TEXTS ON THE MIDDLE
+            Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Text(
+                    "Welcome to Habitflow",
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.blue,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    "Your daily habit tracker",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.blue,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+
+            // EXPLORE BUTTON
+            Positioned(
+              bottom: 24,
+              left: 0,
+              right: 0,
+              child: Center(
+                child: SizedBox(
+                  width: 160,
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const OnboardingPage2()),
+                        );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                    child: const Text("Explore"),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+// ONBOARDING SCREEN 2
+
+class OnboardingPage2 extends StatelessWidget {
+  const OnboardingPage2({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Stack(
+          children: [
+            // TEXTS IN THE MIDDLE
+            Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    "Create your routine",
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.blue,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 8),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                    child: const Text(
+                      "Choose habits you want to focus on and make them part of your life",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.blue,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // NEXT BUTTON
+            Positioned(
+              bottom: 24,
+              left: 0,
+              right: 0,
+              child: Center(
+                child: SizedBox(
+                  width: 160,
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const OnboardingPage3()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                    child: const Text("Next"),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+
+// ONBOARDING SCREEN 3
+
+class OnboardingPage3 extends StatelessWidget {
+  const OnboardingPage3({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Stack(
+          children: [
+            // TEXTS IN THE MIDDLE
+            Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    "Track your habits",
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.blue,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 8),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                    child: const Text(
+                      "Record your progress easily and review your performance",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.blue,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // NEXT BUTTON
+            Positioned(
+              bottom: 24,
+              left: 0,
+              right: 0,
+              child: Center(
+                child: SizedBox(
+                  width: 160,
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const OnboardingPage4()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                    child: const Text("Next"),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+
+
+// ONBOARDING SCREEN 4
+
+class OnboardingPage4 extends StatelessWidget {
+  const OnboardingPage4({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Stack(
+          children: [
+            // TEXTS IN THE MIDDLE
+            Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    "Keep the momentum",
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.blue,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 8),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                    child: const Text(
+                      "Stay consistent with optimizable reminders and notifications",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.blue,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // NEXT BUTTON
+            Positioned(
+              bottom: 24,
+              left: 0,
+              right: 0,
+              child: Center(
+                child: SizedBox(
+                  width: 160,
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const LoginScreen1()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                    child: const Text("Start"),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+// LOGIN SCREEN 1
+
+class LoginScreen1 extends StatefulWidget {
+  const LoginScreen1({super.key});
+
+  @override
+  State<LoginScreen1> createState() => _LoginScreen1State();
+}
+
+class _LoginScreen1State extends State<LoginScreen1> {
+  bool rememberMe = false; //initialize checkmark
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 40),
+              const Text("Login",
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text("Login to continue", style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+              ),
+              const SizedBox(height: 60),
+              const Text("Email",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue,
+                ),
+              ),
+              const SizedBox(height: 8),
+              TextField(
+                style: const TextStyle(color: Colors.blue),
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  hintText: "Enter your email",
+                  hintStyle: TextStyle(color: Colors.grey[400]),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                ),
+              ),
+              const SizedBox(height: 24),
+              const Text("Password", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.blue,),),
+              const SizedBox(height: 8),
+              TextField(
+                obscureText: true,
+                style: const TextStyle(color: Colors.blue),
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  hintText: "Enter your password",
+                  hintStyle: TextStyle(color: Colors.grey[400]),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                ),
+              ),
+              const SizedBox(height: 16),
+
+              // REMEMBER ME
+              Row(
+                children: [
+                  Checkbox(
+                    value: rememberMe,
+                    onChanged: (value) {
+                      setState(() {
+                        rememberMe = value ?? false;
+                      });
+                    },
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    activeColor: Colors.blue,
+                  ),
+                  const SizedBox(width: 8),
+                  const Text("Remember me", style: TextStyle(fontSize: 16, color: Colors.black87),),
+                ],
+              ),
+
+              const SizedBox(height: 24),
+
+              Center(
+                child: Column(
+                  children: [
+                    // LOGIN BUTTON
+                    SizedBox(
+                      width: 160,
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // TODO: handle login
+                        },
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                        ),
+                        child: const Text("Login"),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    // SIGN UP LINK
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const LoginScreen2()), // your SignUp screen
+                        );
+                      },
+                      child: RichText(
+                        text: TextSpan(
+                          text: "Don't have an account? ",
+                          style: const TextStyle(
+                            color: Colors.black87,
+                            fontSize: 14,
+                          ),
+                          children: const [
+                            TextSpan(
+                              text: "Sign Up",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blue, // make it look tappable
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+
+
+
+
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+
+//LOGIN SCREEN 2 ( SIGN UP SCREEN )
+
+
+class LoginScreen2 extends StatefulWidget {
+  const LoginScreen2({super.key});
+
+  @override
+  State<LoginScreen2> createState() => _LoginScreen2State();
+}
+
+class _LoginScreen2State extends State<LoginScreen2> {
+  bool rememberMe = false; // initialize checkmark
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: SingleChildScrollView( // allows scrolling if keyboard pops up
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 40),
+
+                // SIGN UP TITLE
+                const Text(
+                  "Sign Up",
+                  style: TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue,
+                  ),
+                ),
+
+                const SizedBox(height: 8),
+
+                // SUBTITLE
+                Text(
+                  "Create your account to continue",
+                  style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                ),
+
+                const SizedBox(height: 40),
+
+                // NAME LABEL
+                const Text(
+                  "Name",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue,
+                  ),
+                ),
+                const SizedBox(height: 8),
+
+                // NAME INPUT
+                TextField(
+                  style: const TextStyle(color: Colors.blue),
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    hintText: "Please enter your name",
+                    hintStyle: TextStyle(color: Colors.grey[400]),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                  ),
+                ),
+
+                const SizedBox(height: 24),
+
+                // EMAIL LABEL
+                const Text(
+                  "Email",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue,
+                  ),
+                ),
+                const SizedBox(height: 8),
+
+                // EMAIL INPUT
+                TextField(
+                  style: const TextStyle(color: Colors.blue),
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    hintText: "Enter your email",
+                    hintStyle: TextStyle(color: Colors.grey[400]),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                  ),
+                ),
+
+                const SizedBox(height: 24),
+
+                // PASSWORD LABEL
+                const Text(
+                  "Password",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue,
+                  ),
+                ),
+                const SizedBox(height: 8),
+
+                // PASSWORD INPUT
+                TextField(
+                  obscureText: true,
+                  style: const TextStyle(color: Colors.blue),
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    hintText: "Enter your password",
+                    hintStyle: TextStyle(color: Colors.grey[400]),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                  ),
+                ),
+
+                const SizedBox(height: 16),
+
+                // REMEMBER ME
+                Row(
+                  children: [
+                    Checkbox(
+                      value: rememberMe,
+                      onChanged: (value) {
+                        setState(() {
+                          rememberMe = value ?? false;
+                        });
+                      },
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      activeColor: Colors.blue,
+                    ),
+                    const SizedBox(width: 8),
+                    const Text(
+                      "Remember me",
+                      style: TextStyle(fontSize: 16, color: Colors.black87),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 24),
+
+                // LOGIN BUTTON + SIGN UP LINK
+                Center(
+                  child: Column(
+                    children: [
+                      // SIGN UP BUTTON
+                      SizedBox(
+                        width: 160,
+                        height: 50,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            // TODO: handle sign up
+                          },
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          ),
+                          child: const Text("Sign Up"),
+                        ),
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      // LOGIN LINK
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const LoginScreen1()), // go back to Login
+                          );
+                        },
+                        child: RichText(
+                          text: TextSpan(
+                            text: "Have an account? ",
+                            style: const TextStyle(
+                              color: Colors.black87,
+                              fontSize: 14,
+                            ),
+                            children: const [
+                              TextSpan(
+                                text: "Login",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.blue,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 24), // some bottom padding
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: OnboardingPage1(),
+    );
+  }
+}
