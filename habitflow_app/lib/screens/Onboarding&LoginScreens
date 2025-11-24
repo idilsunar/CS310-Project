@@ -19,19 +19,12 @@ class OnboardingPage1 extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // --- NETWORK IMAGE ---
+                  // NETWORK IMAGE
                   Image.network(
-                    'https://habitminder.com/images/HabitMinder-icon.png', // replace with your URL
+                    'https://habitminder.com/images/HabitMinder-icon.png',
                     width: 120,
                     height: 120,
                   ),
-
-                  // OR --- ASSET IMAGE ---
-                  // Image.asset(
-                  //   'assets/images/your_local_image.png', // make sure you added it in pubspec.yaml
-                  //   width: 120,
-                  //   height: 120,
-                  // ),
 
                   const SizedBox(height: 24),
 
