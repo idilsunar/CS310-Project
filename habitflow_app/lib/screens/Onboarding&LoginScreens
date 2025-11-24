@@ -409,7 +409,12 @@ class _LoginScreen1State extends State<LoginScreen1> {
                       width: 160,
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: () {},                    //WILL ADD LINK TO THE HOME PAGE
+                        onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const HomeScreen()),  //LINK TO OMER's HOME PAGE
+                        );
+                        },                    //WILL ADD LINK TO THE HOME PAGE
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),
@@ -626,7 +631,10 @@ class _LoginScreen2State extends State<LoginScreen2> {
                     height: 50,
                     child: ElevatedButton(
                       onPressed: () {
-                        // WILL ADD LINK TO THE HOME PAGE
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const HomeScreen()),  //LINK TO OMER's HOME PAGE
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
