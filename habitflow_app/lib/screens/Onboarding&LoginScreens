@@ -40,7 +40,7 @@ class OnboardingPage1 extends StatelessWidget {
               ),
             ),
 
-            // EXPLORE BUTTON
+            // EXPLORE BUTTON WITH LINK TO THE NEXT PAGE  (OnboardingPage2)
             Positioned(
               bottom: 24,
               left: 0,
@@ -51,10 +51,10 @@ class OnboardingPage1 extends StatelessWidget {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const OnboardingPage2()),
-                        );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const OnboardingPage2()),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
@@ -116,7 +116,8 @@ class OnboardingPage2 extends StatelessWidget {
               ),
             ),
 
-            // NEXT BUTTON
+            // NEXT BUTTON with link to the OnboardingPage3
+
             Positioned(
               bottom: 24,
               left: 0,
@@ -193,7 +194,8 @@ class OnboardingPage3 extends StatelessWidget {
               ),
             ),
 
-            // NEXT BUTTON
+            // NEXT BUTTON with link to the OnboardingPage4
+
             Positioned(
               bottom: 24,
               left: 0,
@@ -271,7 +273,8 @@ class OnboardingPage4 extends StatelessWidget {
               ),
             ),
 
-            // NEXT BUTTON
+            // NEXT BUTTON with link to the Login Screen
+
             Positioned(
               bottom: 24,
               left: 0,
@@ -375,7 +378,8 @@ class _LoginScreen1State extends State<LoginScreen1> {
               ),
               const SizedBox(height: 16),
 
-              // REMEMBER ME
+              // REMEMBER ME CHECKBOX
+
               Row(
                 children: [
                   Checkbox(
@@ -405,9 +409,7 @@ class _LoginScreen1State extends State<LoginScreen1> {
                       width: 160,
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: () {
-                          // TODO: handle login
-                        },
+                        onPressed: () {},                    //WILL ADD LINK TO THE HOME PAGE
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),
@@ -417,27 +419,30 @@ class _LoginScreen1State extends State<LoginScreen1> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    // SIGN UP LINK
+
+                    // LINK TO SIGN UP IF DON'T HAVE AN ACCOUNT
+
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const LoginScreen2()), // your SignUp screen
+                          MaterialPageRoute(builder: (context) => const LoginScreen2()), // GO TO SIGN UP SCREEN
                         );
                       },
                       child: RichText(
-                        text: TextSpan(
+                        text: const TextSpan(
                           text: "Don't have an account? ",
                           style: const TextStyle(
                             color: Colors.black87,
                             fontSize: 14,
                           ),
-                          children: const [
+                          children:
+                          [
                             TextSpan(
                               text: "Sign Up",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: Colors.blue, // make it look tappable
+                                color: Colors.blue,
                               ),
                             ),
                           ],
@@ -447,10 +452,6 @@ class _LoginScreen1State extends State<LoginScreen1> {
                   ],
                 ),
               )
-
-
-
-
             ],
           ),
         ),
@@ -483,194 +484,195 @@ class _LoginScreen2State extends State<LoginScreen2> {
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: SingleChildScrollView( // allows scrolling if keyboard pops up
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                const SizedBox(height: 40),
+
+            // SIGN UP TITLE
+            const Text(
+              "Sign Up",
+              style: TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+                color: Colors.blue,
+              ),
+            ),
+
+            const SizedBox(height: 8),
+
+
+            // SUBTITLE BENEATH "Sign Up"
+
+            Text(
+              "Create your account to continue",
+              style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+            ),
+
+            const SizedBox(height: 40),
+
+            // NAME LABEL
+            const Text(
+              "Name",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.blue,
+              ),
+            ),
+            const SizedBox(height: 8),
+
+            // NAME INPUT
+            TextField(
+              style: const TextStyle(color: Colors.blue),
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                hintText: "Please enter your name",
+                hintStyle: TextStyle(color: Colors.grey[400]),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+              ),
+            ),
+
+            const SizedBox(height: 24),
+
+            // EMAIL LABEL
+            const Text(
+              "Email",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.blue,
+              ),
+            ),
+            const SizedBox(height: 8),
+
+            // EMAIL INPUT
+            TextField(
+              style: const TextStyle(color: Colors.blue),
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                hintText: "Enter your email",
+                hintStyle: TextStyle(color: Colors.grey[400]),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+              ),
+            ),
+
+            const SizedBox(height: 24),
+
+            // PASSWORD LABEL
+            const Text(
+              "Password",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.blue,
+              ),
+            ),
+            const SizedBox(height: 8),
+
+            // PASSWORD INPUT
+            TextField(
+              obscureText: true,
+              style: const TextStyle(color: Colors.blue),
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                hintText: "Enter your password",
+                hintStyle: TextStyle(color: Colors.grey[400]),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            // REMEMBER ME CHECKBOX
+            Row(
               children: [
-                const SizedBox(height: 40),
-
-                // SIGN UP TITLE
+                Checkbox(
+                  value: rememberMe,
+                  onChanged: (value) {
+                    setState(() {
+                      rememberMe = value ?? false;
+                    });
+                  },
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  activeColor: Colors.blue,
+                ),
+                const SizedBox(width: 8),
                 const Text(
-                  "Sign Up",
-                  style: TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue,
-                  ),
+                  "Remember me",
+                  style: TextStyle(fontSize: 16, color: Colors.black87),
                 ),
-
-                const SizedBox(height: 8),
-
-                // SUBTITLE
-                Text(
-                  "Create your account to continue",
-                  style: TextStyle(fontSize: 16, color: Colors.grey[600]),
-                ),
-
-                const SizedBox(height: 40),
-
-                // NAME LABEL
-                const Text(
-                  "Name",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue,
-                  ),
-                ),
-                const SizedBox(height: 8),
-
-                // NAME INPUT
-                TextField(
-                  style: const TextStyle(color: Colors.blue),
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    hintText: "Please enter your name",
-                    hintStyle: TextStyle(color: Colors.grey[400]),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-                  ),
-                ),
-
-                const SizedBox(height: 24),
-
-                // EMAIL LABEL
-                const Text(
-                  "Email",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue,
-                  ),
-                ),
-                const SizedBox(height: 8),
-
-                // EMAIL INPUT
-                TextField(
-                  style: const TextStyle(color: Colors.blue),
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    hintText: "Enter your email",
-                    hintStyle: TextStyle(color: Colors.grey[400]),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-                  ),
-                ),
-
-                const SizedBox(height: 24),
-
-                // PASSWORD LABEL
-                const Text(
-                  "Password",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue,
-                  ),
-                ),
-                const SizedBox(height: 8),
-
-                // PASSWORD INPUT
-                TextField(
-                  obscureText: true,
-                  style: const TextStyle(color: Colors.blue),
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    hintText: "Enter your password",
-                    hintStyle: TextStyle(color: Colors.grey[400]),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-                  ),
-                ),
-
-                const SizedBox(height: 16),
-
-                // REMEMBER ME
-                Row(
-                  children: [
-                    Checkbox(
-                      value: rememberMe,
-                      onChanged: (value) {
-                        setState(() {
-                          rememberMe = value ?? false;
-                        });
-                      },
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      activeColor: Colors.blue,
-                    ),
-                    const SizedBox(width: 8),
-                    const Text(
-                      "Remember me",
-                      style: TextStyle(fontSize: 16, color: Colors.black87),
-                    ),
-                  ],
-                ),
-
-                const SizedBox(height: 24),
-
-                // LOGIN BUTTON + SIGN UP LINK
-                Center(
-                  child: Column(
-                    children: [
-                      // SIGN UP BUTTON
-                      SizedBox(
-                        width: 160,
-                        height: 50,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            // TODO: handle sign up
-                          },
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                          ),
-                          child: const Text("Sign Up"),
-                        ),
-                      ),
-
-                      const SizedBox(height: 16),
-
-                      // LOGIN LINK
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => const LoginScreen1()), // go back to Login
-                          );
-                        },
-                        child: RichText(
-                          text: TextSpan(
-                            text: "Have an account? ",
-                            style: const TextStyle(
-                              color: Colors.black87,
-                              fontSize: 14,
-                            ),
-                            children: const [
-                              TextSpan(
-                                text: "Login",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.blue,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 24), // some bottom padding
               ],
             ),
+
+            const SizedBox(height: 24),
+
+
+            // SIGN UP BUTTON
+
+            Center(
+              child: Column(
+                children: [
+                  // SIGN UP BUTTON
+                  SizedBox(
+                    width: 160,
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        // WILL ADD LINK TO THE HOME PAGE
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                      child: const Text("Sign Up"),
+                    ),
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  // BACK TO THE LOGIN LINK
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const LoginScreen1()), // go back to Login if have an account
+                      );
+                    },
+                    child: RichText(
+                      text: const TextSpan(
+                        text: "Have an account? ",
+                        style: const TextStyle(color: Colors.black87, fontSize: 14,),
+                        children: [
+                          TextSpan(
+                            text: "Login",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blue,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 24),
+                ]
           ),
         ),
       ),
+    ),
     );
   }
 }
