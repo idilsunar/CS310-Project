@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/habitDetailScreen.dart';
-import 'screens/progressPageScreen.dart';
+import 'screens/onboarding_screen.dart';
 
 void main() => runApp(const MyApp());
 
@@ -11,7 +10,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ProgressPageScreen(),
+      home: const OnboardingPage1(),
     );
   }
 }

@@ -21,3 +21,4 @@ class AppTextStyles {
     color: AppColors.primary,
   );
 }
+

@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
+import '../models/habit.dart';
 
 class HabitDetailScreen extends StatefulWidget {
-  const HabitDetailScreen({Key? key}) : super(key: key);
+  final Habit habit;
+  
+  const HabitDetailScreen({super.key, required this.habit});
 
   @override
   State<HabitDetailScreen> createState() => _HabitDetailScreenState();
 }
 
 class _HabitDetailScreenState extends State<HabitDetailScreen> {
-  final TextEditingController nameController =
-  TextEditingController(text: "Running");
+  late TextEditingController nameController;
+  late String selectedCategory;
+  late String selectedFrequency;
+  late String selectedColor;
 
-  // Dropdown values
-  String selectedCategory = "Sports and activities";
-  String selectedFrequency = "4 times per week";
-  String selectedColor = "Blue";
-
-  // Dropdown lists
   final List<String> categoryList = [
     "Sports and activities",
     "Health",
@@ -41,6 +40,15 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    nameController = TextEditingController(text: widget.habit.name);
+    selectedCategory = widget.habit.category ?? "Sports and activities";
+    selectedFrequency = widget.habit.frequency ?? "4 times per week";
+    selectedColor = widget.habit.color ?? "Blue";
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -50,7 +58,6 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // BACK + TITLE
               Row(
                 children: [
                   GestureDetector(
@@ -66,13 +73,10 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                         color: Colors.black),
                   ),
                   const Spacer(),
-                  const SizedBox(width: 26), // balancing spacing
+                  const SizedBox(width: 26),
                 ],
               ),
-
               const SizedBox(height: 30),
-
-              // HABIT NAME
               const Text(
                 "Habit Name",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
@@ -91,10 +95,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                   const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                 ),
               ),
-
               const SizedBox(height: 25),
-
-              // CATEGORY
               const Text(
                 "Category",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
@@ -108,10 +109,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                 },
                 backgroundColor: Colors.green.shade100,
               ),
-
               const SizedBox(height: 25),
-
-              // FREQUENCY
               const Text(
                 "Frequency",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
@@ -124,10 +122,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                   setState(() => selectedFrequency = value!);
                 },
               ),
-
               const SizedBox(height: 25),
-
-              // COLOR
               const Text(
                 "Specific habit color",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
@@ -141,10 +136,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                 },
                 backgroundColor: Colors.blue.shade100,
               ),
-
               const SizedBox(height: 50),
-
-              // EDIT HABIT BUTTON
               SizedBox(
                 width: double.infinity,
                 height: 55,
@@ -155,7 +147,11 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                     side: const BorderSide(color: Color(0xFF6A00FF), width: 1.4),
                   ),
                   onPressed: () {
-                    // Save logic here
+                    widget.habit.name = nameController.text;
+                    widget.habit.category = selectedCategory;
+                    widget.habit.frequency = selectedFrequency;
+                    widget.habit.color = selectedColor;
+                    Navigator.pop(context);
                   },
                   child: const Text(
                     "Edit habit",
@@ -166,7 +162,6 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 30),
             ],
           ),
@@ -175,7 +170,6 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
     );
   }
 
-  // Reusable Dropdown Widget
   Widget _buildDropdown({
     required String value,
     required List<String> items,
@@ -189,7 +183,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
       ),
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: DropdownButtonFormField<String>(
-        value: value,
+        initialValue: value,
         decoration: const InputDecoration(border: InputBorder.none),
         icon: const Icon(Icons.keyboard_arrow_down),
         items: items
@@ -203,3 +197,4 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
     );
   }
 }
+

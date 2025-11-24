@@ -1,355 +1,5 @@
 import 'package:flutter/material.dart';
-
 import 'home_screen.dart';
-import 'add_habit_screen.dart';
-import 'calendar_screen.dart';
-import 'settings_screen.dart';
-
-// ONBOARDING SCREEN 1
-class OnboardingPage1 extends StatelessWidget {
-  const OnboardingPage1({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Stack(
-          children: [
-            Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-
-                  // NETWORK IMAGE
-                  Image.network(
-                    'https://habitminder.com/images/HabitMinder-icon.png',
-                    width: 120,
-                    height: 120,
-                  ),
-
-
-                  const SizedBox(height: 24),
-
-                  const Text(
-                    "Welcome to Habitflow",
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.blue,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    "Your daily habit tracker",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.blue,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
-
-            // EXPLORE BUTTON
-            Positioned(
-              bottom: 24,
-              left: 0,
-              right: 0,
-              child: Center(
-                child: SizedBox(
-                  width: 160,
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const OnboardingPage2()),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                    ),
-                    child: const Text("Explore"),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-
-
-// ONBOARDING SCREEN 2
-
-class OnboardingPage2 extends StatelessWidget {
-  const OnboardingPage2({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Stack(
-          children: [
-
-            // TEXTS IN THE MIDDLE
-            Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-
-
-                  // ASSET IMAGE
-                  Image.asset(
-                    'assets/images/todolist.jpg',
-                    width: 120,
-                    height: 120,
-                  ),
-
-
-                  const Text(
-                    "Create your routine",
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.blue,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 8),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                    child: const Text(
-                      "Choose habits you want to focus on and make them part of your life",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.blue,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            // NEXT BUTTON with link to the OnboardingPage3
-
-            Positioned(
-              bottom: 24,
-              left: 0,
-              right: 0,
-              child: Center(
-                child: SizedBox(
-                  width: 160,
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const OnboardingPage3()),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                    ),
-                    child: const Text("Next"),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-
-
-// ONBOARDING SCREEN 3
-
-class OnboardingPage3 extends StatelessWidget {
-  const OnboardingPage3({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Stack(
-          children: [
-            // TEXTS IN THE MIDDLE
-            Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-
-
-                  // ASSET IMAGE
-                  Image.asset(
-                    'assets/images/running.png',
-                    width: 150,
-                    height: 150,
-                  ),
-
-                  const Text(
-                    "Track your habits",
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.blue,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 8),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                    child: const Text(
-                      "Record your progress easily and review your performance",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.blue,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            // NEXT BUTTON with link to the OnboardingPage4
-
-            Positioned(
-              bottom: 24,
-              left: 0,
-              right: 0,
-              child: Center(
-                child: SizedBox(
-                  width: 160,
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const OnboardingPage4()),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                    ),
-                    child: const Text("Next"),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-
-
-
-// ONBOARDING SCREEN 4
-
-class OnboardingPage4 extends StatelessWidget {
-  const OnboardingPage4({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Stack(
-          children: [
-            // TEXTS IN THE MIDDLE
-            Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-
-                  Image.asset(
-                    'assets/images/bell_image.jpg', // make sure you added it in pubspec.yaml
-                    width: 120,
-                    height: 120,
-                  ),
-
-                  const Text(
-                    "Keep the momentum",
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.blue,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 8),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                    child: const Text(
-                      "Stay consistent with optimizable reminders and notifications",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.blue,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            // NEXT BUTTON with link to the Login Screen
-
-            Positioned(
-              bottom: 24,
-              left: 0,
-              right: 0,
-              child: Center(
-                child: SizedBox(
-                  width: 160,
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const LoginScreen1()),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                    ),
-                    child: const Text("Start"),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-
-// LOGIN SCREEN 1
 
 class LoginScreen1 extends StatefulWidget {
   const LoginScreen1({super.key});
@@ -359,7 +9,7 @@ class LoginScreen1 extends StatefulWidget {
 }
 
 class _LoginScreen1State extends State<LoginScreen1> {
-  bool rememberMe = false; //initialize checkmark
+  bool rememberMe = false;
 
   @override
   Widget build(BuildContext context) {
@@ -418,9 +68,6 @@ class _LoginScreen1State extends State<LoginScreen1> {
                 ),
               ),
               const SizedBox(height: 16),
-
-              // REMEMBER ME CHECKBOX
-
               Row(
                 children: [
                   Checkbox(
@@ -439,21 +86,18 @@ class _LoginScreen1State extends State<LoginScreen1> {
                   const Text("Remember me", style: TextStyle(fontSize: 16, color: Colors.black87),),
                 ],
               ),
-
               const SizedBox(height: 24),
-
               Center(
                 child: Column(
                   children: [
-                    // LOGIN BUTTON
                     SizedBox(
                       width: 160,
                       height: 50,
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
+                          Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (context) =>  HomeScreen()), // GO TO SIGN UP SCREEN
+                            MaterialPageRoute(builder: (context) => const HomeScreen()),
                           );
                         },
                         style: ElevatedButton.styleFrom(
@@ -465,20 +109,17 @@ class _LoginScreen1State extends State<LoginScreen1> {
                       ),
                     ),
                     const SizedBox(height: 16),
-
-                    // LINK TO SIGN UP IF DON'T HAVE AN ACCOUNT
-
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const LoginScreen2()), // GO TO SIGN UP SCREEN
+                          MaterialPageRoute(builder: (context) => const LoginScreen2()),
                         );
                       },
                       child: RichText(
                         text: const TextSpan(
                           text: "Don't have an account? ",
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: Colors.black87,
                             fontSize: 14,
                           ),
@@ -506,11 +147,6 @@ class _LoginScreen1State extends State<LoginScreen1> {
   }
 }
 
-
-
-//LOGIN SCREEN 2 ( SIGN UP SCREEN )
-
-
 class LoginScreen2 extends StatefulWidget {
   const LoginScreen2({super.key});
 
@@ -519,7 +155,7 @@ class LoginScreen2 extends StatefulWidget {
 }
 
 class _LoginScreen2State extends State<LoginScreen2> {
-  bool rememberMe = false; // initialize checkmark
+  bool rememberMe = false;
 
   @override
   Widget build(BuildContext context) {
@@ -528,13 +164,11 @@ class _LoginScreen2State extends State<LoginScreen2> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: SingleChildScrollView( // allows scrolling if keyboard pops up
+          child: SingleChildScrollView(
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 40),
-
-                  // SIGN UP TITLE
                   const Text(
                     "Sign Up",
                     style: TextStyle(
@@ -543,20 +177,12 @@ class _LoginScreen2State extends State<LoginScreen2> {
                       color: Colors.blue,
                     ),
                   ),
-
                   const SizedBox(height: 8),
-
-
-                  // SUBTITLE BENEATH "Sign Up"
-
                   Text(
                     "Create your account to continue",
                     style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                   ),
-
                   const SizedBox(height: 40),
-
-                  // NAME LABEL
                   const Text(
                     "Name",
                     style: TextStyle(
@@ -566,8 +192,6 @@ class _LoginScreen2State extends State<LoginScreen2> {
                     ),
                   ),
                   const SizedBox(height: 8),
-
-                  // NAME INPUT
                   TextField(
                     style: const TextStyle(color: Colors.blue),
                     decoration: InputDecoration(
@@ -579,10 +203,7 @@ class _LoginScreen2State extends State<LoginScreen2> {
                       contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
                     ),
                   ),
-
                   const SizedBox(height: 24),
-
-                  // EMAIL LABEL
                   const Text(
                     "Email",
                     style: TextStyle(
@@ -592,8 +213,6 @@ class _LoginScreen2State extends State<LoginScreen2> {
                     ),
                   ),
                   const SizedBox(height: 8),
-
-                  // EMAIL INPUT
                   TextField(
                     style: const TextStyle(color: Colors.blue),
                     decoration: InputDecoration(
@@ -605,10 +224,7 @@ class _LoginScreen2State extends State<LoginScreen2> {
                       contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
                     ),
                   ),
-
                   const SizedBox(height: 24),
-
-                  // PASSWORD LABEL
                   const Text(
                     "Password",
                     style: TextStyle(
@@ -618,8 +234,6 @@ class _LoginScreen2State extends State<LoginScreen2> {
                     ),
                   ),
                   const SizedBox(height: 8),
-
-                  // PASSWORD INPUT
                   TextField(
                     obscureText: true,
                     style: const TextStyle(color: Colors.blue),
@@ -632,10 +246,7 @@ class _LoginScreen2State extends State<LoginScreen2> {
                       contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
                     ),
                   ),
-
                   const SizedBox(height: 16),
-
-                  // REMEMBER ME CHECKBOX
                   Row(
                     children: [
                       Checkbox(
@@ -657,26 +268,19 @@ class _LoginScreen2State extends State<LoginScreen2> {
                       ),
                     ],
                   ),
-
                   const SizedBox(height: 24),
-
-
-                  // SIGN UP BUTTON
-
                   Center(
                     child: Column(
                       children: [
-                        // SIGN UP BUTTON
                         SizedBox(
                           width: 160,
                           height: 50,
                           child: ElevatedButton(
                             onPressed: () {
-                              Navigator.push(
+                              Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => const HomeScreen()), // GO TO SIGN UP SCREEN
+                                MaterialPageRoute(builder: (context) => const HomeScreen()),
                               );
-
                             },
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
@@ -686,17 +290,15 @@ class _LoginScreen2State extends State<LoginScreen2> {
                             child: const Text("Sign Up"),
                           ),
                         ),
-
                         const SizedBox(height: 16),
-
-                        // BACK TO THE LOGIN LINK
                         GestureDetector(
                           onTap: () {
+                            Navigator.pop(context);
                           },
                           child: RichText(
                             text: const TextSpan(
                               text: "Have an account? ",
-                              style: const TextStyle(color: Colors.black87, fontSize: 14,),
+                              style: TextStyle(color: Colors.black87, fontSize: 14,),
                               children: [
                                 TextSpan(
                                   text: "Login",
@@ -712,7 +314,6 @@ class _LoginScreen2State extends State<LoginScreen2> {
                       ],
                     ),
                   ),
-
                   const SizedBox(height: 24),
                 ]
             ),
@@ -722,3 +323,4 @@ class _LoginScreen2State extends State<LoginScreen2> {
     );
   }
 }
+

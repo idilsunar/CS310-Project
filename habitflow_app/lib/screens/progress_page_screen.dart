@@ -7,37 +7,17 @@ class ProgressPageScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text('Progress Screen'),
+        centerTitle: true,
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Back button + title
-              Row(
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.arrow_back, size: 28),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                  const Expanded(
-                    child: Center(
-                      child: Text(
-                        "Progress Screen",
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 48), // keeps center aligned
-                ],
-              ),
-
               const SizedBox(height: 20),
-
-              // ---- HABIT PROGRESS LIST ----
               Expanded(
                 child: ListView(
                   children: const [
@@ -72,10 +52,7 @@ class ProgressPageScreen extends StatelessWidget {
                   ],
                 ),
               ),
-
               const SizedBox(height: 20),
-
-              // ---- EDIT BUTTON ----
               Center(
                 child: SizedBox(
                   width: double.infinity,
@@ -85,20 +62,22 @@ class ProgressPageScreen extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      side: const BorderSide(color: Color(0xFF5C2EF9)),
+                      side: const BorderSide(color: Color(0xFF5C2EF9), width: 2),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                     child: const Text(
-                      "Edit habit",
+                      "Back",
                       style: TextStyle(
                         color: Color(0xFF5C2EF9),
                         fontSize: 18,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
                 ),
               ),
-
               const SizedBox(height: 20),
             ],
           ),
@@ -108,9 +87,6 @@ class ProgressPageScreen extends StatelessWidget {
   }
 }
 
-/// ------------------------------
-///      REUSABLE PROGRESS TILE
-/// ------------------------------
 class HabitProgressTile extends StatelessWidget {
   final String emoji;
   final String title;
@@ -134,7 +110,6 @@ class HabitProgressTile extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Title Row
           Row(
             children: [
               Text(emoji, style: const TextStyle(fontSize: 22)),
@@ -148,10 +123,7 @@ class HabitProgressTile extends StatelessWidget {
               ),
             ],
           ),
-
           const SizedBox(height: 12),
-
-          // Proper progress bar
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(25),
@@ -161,13 +133,10 @@ class HabitProgressTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(25),
               child: Stack(
                 children: [
-                  // Background white bar
                   Container(
                     height: 40,
                     color: Colors.white,
                   ),
-
-                  // Gradient progress only for completed part
                   FractionallySizedBox(
                     widthFactor: percent,
                     child: Container(
@@ -181,8 +150,6 @@ class HabitProgressTile extends StatelessWidget {
                       ),
                     ),
                   ),
-
-                  // Percentage text centered
                   Positioned.fill(
                     child: Center(
                       child: Stack(

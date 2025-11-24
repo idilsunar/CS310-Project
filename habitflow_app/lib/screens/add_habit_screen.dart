@@ -46,9 +46,7 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                 value == null || value.isEmpty ? 'Required' : null,
                 onSaved: (val) => _name = val,
               ),
-
               const SizedBox(height: 20),
-
               DropdownButtonFormField<String>(
                 decoration: InputDecoration(
                   labelText: 'Category',
@@ -58,19 +56,17 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                   ),
                 ),
                 items: const [
-                  DropdownMenuItem(child: Text('Study'), value: 'Study'),
-                  DropdownMenuItem(child: Text('Health'), value: 'Health'),
-                  DropdownMenuItem(child: Text('Work'), value: 'Work'),
-                  DropdownMenuItem(child: Text('School'), value: 'School'),
-                  DropdownMenuItem(child: Text('Workout'), value: 'Workout'),
-                  DropdownMenuItem(child: Text('Homework'), value: 'Homework'),
+                  DropdownMenuItem(value: 'Study', child: Text('Study')),
+                  DropdownMenuItem(value: 'Health', child: Text('Health')),
+                  DropdownMenuItem(value: 'Work', child: Text('Work')),
+                  DropdownMenuItem(value: 'School', child: Text('School')),
+                  DropdownMenuItem(value: 'Workout', child: Text('Workout')),
+                  DropdownMenuItem(value: 'Homework', child: Text('Homework')),
                 ],
                 validator: (value) => value == null ? 'Required' : null,
                 onChanged: (value) => _category = value,
               ),
-
               const SizedBox(height: 20),
-
               DropdownButtonFormField<String>(
                 decoration: InputDecoration(
                   labelText: 'Frequency',
@@ -80,18 +76,16 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                   ),
                 ),
                 items: const [
-                  DropdownMenuItem(child: Text('Daily'), value: 'Daily'),
-                  DropdownMenuItem(child: Text('Weekly'), value: 'Weekly'),
-                  DropdownMenuItem(child: Text('Monthly'), value: 'Monthly'),
-                  DropdownMenuItem(child: Text('Yearly'), value: 'Yearly'),
-                  DropdownMenuItem(child: Text('Weekends'), value: 'Weekends'),
+                  DropdownMenuItem(value: 'Daily', child: Text('Daily')),
+                  DropdownMenuItem(value: 'Weekly', child: Text('Weekly')),
+                  DropdownMenuItem(value: 'Monthly', child: Text('Monthly')),
+                  DropdownMenuItem(value: 'Yearly', child: Text('Yearly')),
+                  DropdownMenuItem(value: 'Weekends', child: Text('Weekends')),
                 ],
                 validator: (value) => value == null ? 'Required' : null,
                 onChanged: (value) => _frequency = value,
               ),
-
               const SizedBox(height: 20),
-
               DropdownButtonFormField<String>(
                 decoration: InputDecoration(
                   labelText: 'Color',
@@ -101,21 +95,18 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                   ),
                 ),
                 items: const [
-                  DropdownMenuItem(child: Text('Red'), value: 'Red'),
-                  DropdownMenuItem(child: Text('Orange'), value: 'Orange'),
-                  DropdownMenuItem(child: Text('Blue'), value: 'Blue'),
-                  DropdownMenuItem(child: Text('Green'), value: 'Green'),
-                  DropdownMenuItem(child: Text('Yellow'), value: 'Yellow'),
-                  DropdownMenuItem(child: Text('Purple'), value: 'Purple'),
-                  DropdownMenuItem(child: Text('Grey'), value: 'Grey'),
+                  DropdownMenuItem(value: 'Red', child: Text('Red')),
+                  DropdownMenuItem(value: 'Orange', child: Text('Orange')),
+                  DropdownMenuItem(value: 'Blue', child: Text('Blue')),
+                  DropdownMenuItem(value: 'Green', child: Text('Green')),
+                  DropdownMenuItem(value: 'Yellow', child: Text('Yellow')),
+                  DropdownMenuItem(value: 'Purple', child: Text('Purple')),
+                  DropdownMenuItem(value: 'Grey', child: Text('Grey')),
                 ],
                 validator: (value) => value == null ? 'Required' : null,
                 onChanged: (value) => _color = value,
               ),
-
               const SizedBox(height: 30),
-
-              // SAVE
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -149,13 +140,10 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                       );
                     }
                   },
-                  child: const Text('Save'),
+                  child: const Text('Save', style: TextStyle(color: Colors.white)),
                 ),
               ),
-
               const SizedBox(height: 12),
-
-              // CANCEL
               SizedBox(
                 width: double.infinity,
                 child: OutlinedButton(
@@ -176,3 +164,4 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
     );
   }
 }
+

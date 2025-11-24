@@ -13,3 +13,4 @@ class Habit {
     this.color,
   });
 }
+
