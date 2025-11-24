@@ -3,12 +3,9 @@ import 'package:flutter/material.dart';
 class AppColors {
   AppColors._(); // private constructor
 
-  static const primary = Color(0xFF4CAF50);
-  static const background = Colors.white;
-
-  static const lightGreen = Color(0xFFE8F5E9);
-  static const lightBlue = Color(0xFFE3F2FD);
-
-  static const textPrimary = Colors.black87;
-  static const textSecondary = Colors.grey;
+  static const Color background = Color(0xFFF9F2FF); // açık lila
+  static const Color primary = Color(0xFF6B4EFF);    // mor
+  static const Color textDark = Color(0xFF222222);
+  static const Color textLight = Color(0xFF777777);
+  static const Color card = Colors.white;
 }

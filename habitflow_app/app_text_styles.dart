@@ -4,20 +4,20 @@ import 'app_colors.dart';
 class AppTextStyles {
   AppTextStyles._();
 
-  static const screenTitle = TextStyle(
-    fontSize: 22,
+  static const TextStyle title = TextStyle(
+    fontSize: 24,
     fontWeight: FontWeight.bold,
-    color: AppColors.textPrimary,
+    color: AppColors.textDark,
   );
 
-  static const cardTitle = TextStyle(
+  static const TextStyle subtitle = TextStyle(
+    fontSize: 16,
+    color: AppColors.textLight,
+  );
+
+  static const TextStyle button = TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.w600,
-    color: AppColors.textPrimary,
-  );
-
-  static const cardSubtitle = TextStyle(
-    fontSize: 13,
-    color: AppColors.textSecondary,
+    color: AppColors.primary,
   );
 }
