@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // ONBOARDING SCREEN 1
 
+// ONBOARDING SCREEN 1
 class OnboardingPage1 extends StatelessWidget {
   const OnboardingPage1({super.key});
 
@@ -13,12 +14,28 @@ class OnboardingPage1 extends StatelessWidget {
       body: SafeArea(
         child: Stack(
           children: [
-            // TEXTS ON THE MIDDLE
+            // MIDDLE CONTENT
             Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Text(
+                children: [
+                  // --- NETWORK IMAGE ---
+                  Image.network(
+                    'https://habitminder.com/images/HabitMinder-icon.png', // replace with your URL
+                    width: 120,
+                    height: 120,
+                  ),
+
+                  // OR --- ASSET IMAGE ---
+                  // Image.asset(
+                  //   'assets/images/your_local_image.png', // make sure you added it in pubspec.yaml
+                  //   width: 120,
+                  //   height: 120,
+                  // ),
+
+                  const SizedBox(height: 24),
+
+                  const Text(
                     "Welcome to Habitflow",
                     style: TextStyle(
                       fontSize: 22,
@@ -27,8 +44,8 @@ class OnboardingPage1 extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 8),
-                  Text(
+                  const SizedBox(height: 8),
+                  const Text(
                     "Your daily habit tracker",
                     style: TextStyle(
                       fontSize: 16,
@@ -40,7 +57,7 @@ class OnboardingPage1 extends StatelessWidget {
               ),
             ),
 
-            // EXPLORE BUTTON WITH LINK TO THE NEXT PAGE  (OnboardingPage2)
+            // EXPLORE BUTTON
             Positioned(
               bottom: 24,
               left: 0,
@@ -72,6 +89,7 @@ class OnboardingPage1 extends StatelessWidget {
     );
   }
 }
+
 
 
 // ONBOARDING SCREEN 2
@@ -410,11 +428,7 @@ class _LoginScreen1State extends State<LoginScreen1> {
                       height: 50,
                       child: ElevatedButton(
                         onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const HomeScreen()),  //LINK TO OMER's HOME PAGE
-                        );
-                        },                    //WILL ADD LINK TO THE HOME PAGE
+                        },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),
@@ -631,10 +645,6 @@ class _LoginScreen2State extends State<LoginScreen2> {
                     height: 50,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const HomeScreen()),  //LINK TO OMER's HOME PAGE
-                        );
                       },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
@@ -650,10 +660,6 @@ class _LoginScreen2State extends State<LoginScreen2> {
                   // BACK TO THE LOGIN LINK
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const LoginScreen1()), // go back to Login if have an account
-                      );
                     },
                     child: RichText(
                       text: const TextSpan(
