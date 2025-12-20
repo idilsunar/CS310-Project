@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/preferences_provider.dart';
 import 'login_screen.dart';
 
 class OnboardingPage1 extends StatelessWidget {
@@ -311,8 +313,10 @@ class OnboardingPage4 extends StatelessWidget {
                   width: 160,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
+                    onPressed: () async {
+                      await context.read<PreferencesProvider>().setOnboardingComplete(true);
+                      if (!context.mounted) return;
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) => const LoginScreen1()),
                       );

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "638140953956",
+    "project_id": "habitflow-106cd",
+    "storage_bucket": "habitflow-106cd.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:638140953956:android:0ad6a392c44b5f9fdb3671",
+        "android_client_info": {
+          "package_name": "com.example.habitflow_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIPHzdORoB53tclffdo4NO1ZHT-eAuaGc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

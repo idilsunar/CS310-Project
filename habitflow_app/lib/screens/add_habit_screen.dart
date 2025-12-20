@@ -122,10 +122,13 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                       _formKey.currentState!.save();
 
                       final newHabit = Habit(
+                        id: DateTime.now().millisecondsSinceEpoch.toString(),
                         name: _name!,
                         category: _category,
                         frequency: _frequency,
                         color: _color,
+                        createdBy: 'temp_user',
+                        createdAt: DateTime.now(),
                       );
 
                       Navigator.pop(context, newHabit);
