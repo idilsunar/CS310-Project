@@ -5,11 +5,17 @@ class PreferencesProvider extends ChangeNotifier {
   bool _isDarkMode = false;
   bool _hasCompletedOnboarding = false;
   int _lastSelectedTab = 0;
+  
+  String _dailyNote = '';
+
   bool _isLoading = false;
 
   bool get isDarkMode => _isDarkMode;
   bool get hasCompletedOnboarding => _hasCompletedOnboarding;
   int get lastSelectedTab => _lastSelectedTab;
+  
+  String get dailyNote => _dailyNote;
+
   bool get isLoading => _isLoading;
 
   PreferencesProvider() {
@@ -23,8 +29,11 @@ class PreferencesProvider extends ChangeNotifier {
     try {
       final prefs = await SharedPreferences.getInstance();
       _isDarkMode = prefs.getBool('isDarkMode') ?? false;
-      _hasCompletedOnboarding = prefs.getBool('hasCompletedOnboarding') ?? false;
+      _hasCompletedOnboarding =
+          prefs.getBool('hasCompletedOnboarding') ?? false;
       _lastSelectedTab = prefs.getInt('lastSelectedTab') ?? 0;
+      
+      _dailyNote = prefs.getString('dailyNote') ?? '';
     } catch (e) {
       debugPrint('Error loading preferences: $e');
     } finally {
@@ -82,14 +91,30 @@ class PreferencesProvider extends ChangeNotifier {
       debugPrint('Error loading tab: $e');
     }
   }
+  
+  Future<void> saveDailyNote(String note) async {
+    _dailyNote = note;
+    notifyListeners();
+
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('dailyNote', note);
+    } catch (e) {
+      debugPrint('Error saving daily note: $e');
+    }
+  }
 
   Future<void> clearPreferences() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.clear();
+
       _isDarkMode = false;
       _hasCompletedOnboarding = false;
       _lastSelectedTab = 0;
+      
+      _dailyNote = '';
+
       notifyListeners();
     } catch (e) {
       debugPrint('Error clearing preferences: $e');
