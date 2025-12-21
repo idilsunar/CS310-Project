@@ -167,4 +167,3 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
     );
   }
 }
-
