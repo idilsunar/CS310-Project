@@ -58,14 +58,16 @@ class _HomeScreenState extends State<HomeScreen> {
       final authProvider = context.read<AuthProvider>();
       final habitProvider = context.read<HabitProvider>();
       final prefsProvider = context.read<PreferencesProvider>();
-      
+
       if (authProvider.currentUser != null) {
         habitProvider.loadHabits(authProvider.currentUser!.uid);
       }
-      
+
       setState(() {
         _selectedIndex = prefsProvider.lastSelectedTab;
       });
+
+      _noteController.text = prefsProvider.dailyNote;
     });
   }
 
@@ -183,20 +185,23 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(height: 20),
                   Container(
                     decoration: BoxDecoration(
-                      color: Theme.of(context).brightness == Brightness.dark 
-                          ? Colors.grey.shade800 
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.grey.shade800
                           : Colors.grey.shade50,
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                        color: Theme.of(context).brightness == Brightness.dark 
-                            ? Colors.grey.shade700 
-                            : Colors.grey.shade200, 
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.grey.shade700
+                            : Colors.grey.shade200,
                         width: 1.5
                       ),
                     ),
                     child: TextField(
                       controller: _noteController,
                       maxLines: 3,
+                      onChanged: (val) {
+                        context.read<PreferencesProvider>().saveDailyNote(val);
+                      },
                       decoration: InputDecoration(
                         labelText: 'Note for today:',
                         labelStyle: TextStyle(
