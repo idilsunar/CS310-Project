@@ -20,7 +20,6 @@ class AuthWrapper extends StatelessWidget {
           );
         }
 
-        // ✅ Source of truth
         if (authProvider.currentUser != null) {
           return const HomeScreen();
         }
