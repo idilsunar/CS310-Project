@@ -265,6 +265,10 @@ class _LoginScreen2State extends State<LoginScreen2> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(authProvider.error ?? 'Sign up failed')),
       );
+    }  else {
+      if (mounted) {
+        Navigator.pop(context);
+      }
     }
   }
 
