@@ -66,6 +66,9 @@ class _LoginScreen1State extends State<LoginScreen1> {
           duration: Duration(seconds: 2),
         ),
       );
+      if (mounted && Navigator.canPop(context)) {
+        Navigator.pop(context);
+      }
     } else {
       ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(context).showSnackBar(
