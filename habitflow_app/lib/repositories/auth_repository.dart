@@ -31,10 +31,11 @@ class AuthRepository {
         });
       } catch (e) {
         debugPrint('Firestore Error during signup: $e');
+        // If Firestore fails, the user is still signed up in Auth.
         throw 'Account created, but profile setup failed. This is usually due to Firestore permissions or missing setup. Error: ${e.toString()}';
       }
     }
-
+    
     return user;
   }
 
@@ -48,8 +49,7 @@ class AuthRepository {
     } on FirebaseAuthException catch (e) {
       throw _handleAuthException(e);
     } catch (e) {
-      debugPrint('Error during loginWithEmail: $e');
-      throw 'An unexpected error occurred: ${e.toString()}';
+      throw 'An unexpected error occurred';
     }
   }
 
@@ -81,8 +81,6 @@ class AuthRepository {
         return 'Wrong password provided';
       case 'invalid-email':
         return 'Invalid email address';
-      case 'invalid-credential':
-        return 'Invalid email or password';
       case 'user-disabled':
         return 'This account has been disabled';
       case 'too-many-requests':

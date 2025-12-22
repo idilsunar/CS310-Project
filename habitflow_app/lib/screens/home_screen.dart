@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/habit.dart';
+import '../models/habit_completion.dart';
+import '../repositories/habit_completion_repository.dart';
 import '../utils/app_colors.dart';
 import '../providers/auth_provider.dart';
 import '../providers/habit_provider.dart';
 import '../providers/preferences_provider.dart';
+import '../providers/achievements_provider.dart';
 import 'add_habit_screen.dart';
 import 'habit_detail_screen.dart';
 import 'calendar_screen.dart';
@@ -20,6 +23,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
+  final HabitCompletionRepository _completionRepo = HabitCompletionRepository();
 
   Color _mapColor(String? colorName) {
     if (colorName == null) {
@@ -90,6 +94,92 @@ class _HomeScreenState extends State<HomeScreen> {
     if (result != null && result is Habit && authProvider.currentUser != null) {
       await context.read<HabitProvider>().addHabit(result, authProvider.currentUser!.uid);
     }
+  }
+
+  CompletionStatus _statusFromString(String status) {
+    switch (status) {
+      case 'completed':
+        return CompletionStatus.completed;
+      case 'partial':
+        return CompletionStatus.partial;
+      case 'missed':
+        return CompletionStatus.missed;
+      default:
+        return CompletionStatus.missed;
+    }
+  }
+
+  Future<void> _markHabitCompletion(
+      String userId,
+      String habitId,
+      DateTime date,
+      CompletionStatus status,
+      ) async {
+    try {
+      await _completionRepo.markHabitCompletion(userId, habitId, date, status);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Habit marked as ${status.value}!'),
+            duration: const Duration(seconds: 2),
+            backgroundColor: status == CompletionStatus.completed
+                ? Colors.green
+                : status == CompletionStatus.partial
+                ? Colors.orange
+                : Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: $e')),
+        );
+      }
+    }
+  }
+
+  Widget _buildQuickMarkDialog(Habit habit) {
+    return AlertDialog(
+      title: Text('Mark "${habit.name}"'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Text('How did you do today?'),
+          const SizedBox(height: 16),
+          _buildStatusButton('Completed ✅', 'completed', Colors.green),
+          const SizedBox(height: 8),
+          _buildStatusButton('Partially Done 🟡', 'partial', Colors.orange),
+          const SizedBox(height: 8),
+          _buildStatusButton('Missed ❌', 'missed', Colors.red),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancel'),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStatusButton(String label, String value, Color color) {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: () => Navigator.pop(context, value),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: color.withOpacity(0.1),
+          foregroundColor: color,
+          padding: const EdgeInsets.all(16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+            side: BorderSide(color: color, width: 2),
+          ),
+        ),
+        child: Text(label, style: const TextStyle(fontSize: 16)),
+      ),
+    );
   }
 
   List<Habit> _applySearch(String query, List<Habit> habits) {
@@ -190,10 +280,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           : Colors.grey.shade50,
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? Colors.grey.shade700
-                            : Colors.grey.shade200,
-                        width: 1.5
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.grey.shade700
+                              : Colors.grey.shade200,
+                          width: 1.5
                       ),
                     ),
                     child: TextField(
@@ -230,8 +320,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   hintStyle: const TextStyle(color: Colors.grey),
                   prefixIcon: const Icon(Icons.search, color: Colors.grey),
                   filled: true,
-                  fillColor: Theme.of(context).brightness == Brightness.dark 
-                      ? Colors.grey.shade800 
+                  fillColor: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.grey.shade800
                       : Colors.grey.shade100,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
@@ -244,127 +334,150 @@ class _HomeScreenState extends State<HomeScreen> {
             Expanded(
               child: filteredHabits.isEmpty
                   ? Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.spa_outlined,
-                            size: 64,
-                            color: Colors.grey.shade300,
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            'No habits yet',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.grey.shade400,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'Tap + to create your first habit',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey.shade400,
-                            ),
-                          ),
-                          const SizedBox(height: 24),
-                          ElevatedButton.icon(
-                            onPressed: () async {
-                              if (authProvider.currentUser != null) {
-                                await habitProvider.createExampleHabits(
-                                  authProvider.currentUser!.uid,
-                                );
-                              }
-                            },
-                            icon: const Icon(Icons.auto_awesome),
-                            label: const Text('Add Example Habits'),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.primary,
-                              foregroundColor: Colors.white,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 24,
-                                vertical: 12,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                          ),
-                        ],
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.spa_outlined,
+                      size: 64,
+                      color: Colors.grey.shade300,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'No habits yet',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.grey.shade400,
+                        fontWeight: FontWeight.w500,
                       ),
-                    )
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Tap + to create your first habit',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey.shade400,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    ElevatedButton.icon(
+                      onPressed: () async {
+                        if (authProvider.currentUser != null) {
+                          await habitProvider.createExampleHabits(
+                            authProvider.currentUser!.uid,
+                          );
+                        }
+                      },
+                      icon: const Icon(Icons.auto_awesome),
+                      label: const Text('Add Example Habits'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 12,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
                   : ListView.builder(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      itemCount: filteredHabits.length,
-                      itemBuilder: (context, index) {
-                        final habit = filteredHabits[index];
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                itemCount: filteredHabits.length,
+                itemBuilder: (context, index) {
+                  final habit = filteredHabits[index];
 
-                        return Container(
-                          margin: const EdgeInsets.only(bottom: 12),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).brightness == Brightness.dark 
-                                ? Colors.grey.shade800 
-                                : Colors.white,
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(
-                              color: _mapColor(habit.color),
-                              width: 2,
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 12),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.grey.shade800
+                          : Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: _mapColor(habit.color),
+                        width: 2,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: _mapColor(habit.color).withValues(alpha: 0.1),
+                          blurRadius: 8,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      leading: IconButton(
+                        icon: Icon(
+                          habit.isDone
+                              ? Icons.check_circle
+                              : Icons.radio_button_unchecked,
+                          color: habit.isDone ? Colors.green : Colors.grey.shade400,
+                          size: 32,
+                        ),
+                        onPressed: () async {
+                          // Show completion dialog
+                          final result = await showDialog<String>(
+                            context: context,
+                            builder: (context) => _buildQuickMarkDialog(habit),
+                          );
+
+                          if (result != null && mounted) {
+                            // Mark habit in Firestore
+                            final userId = authProvider.currentUser?.uid;
+                            if (userId != null) {
+                              await _markHabitCompletion(
+                                userId,
+                                habit.id,
+                                DateTime.now(),
+                                _statusFromString(result),
+                              );
+
+                              // Refresh achievements after marking
+                              if (mounted) {
+                                final achievementsProvider = context.read<AchievementsProvider>();
+                                await achievementsProvider.calculateAchievements(userId);
+                              }
+                            }
+                          }
+                        },
+                      ),
+                      title: Text(
+                        habit.name,
+                        style: TextStyle(
+                          color: AppColors.textDark,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                          decoration: habit.isDone ? TextDecoration.lineThrough : null,
+                          decorationColor: Colors.grey,
+                        ),
+                      ),
+                      trailing: IconButton(
+                        icon: Icon(
+                          Icons.info_outline,
+                          color: Colors.grey.shade600,
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => HabitDetailScreen(habit: habit),
                             ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: _mapColor(habit.color).withValues(alpha: 0.1),
-                                blurRadius: 8,
-                                offset: const Offset(0, 4),
-                              ),
-                            ],
-                          ),
-                          child: ListTile(
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                            leading: IconButton(
-                              icon: Icon(
-                                habit.isDone
-                                    ? Icons.check_circle
-                                    : Icons.radio_button_unchecked,
-                                color: habit.isDone ? Colors.green : Colors.grey.shade400,
-                                size: 32,
-                              ),
-                              onPressed: () {
-                                habitProvider.toggleHabitDone(habit.id);
-                              },
-                            ),
-                            title: Text(
-                              habit.name,
-                              style: TextStyle(
-                                color: AppColors.textDark,
-                                fontSize: 17,
-                                fontWeight: FontWeight.w600,
-                                decoration: habit.isDone ? TextDecoration.lineThrough : null,
-                                decorationColor: Colors.grey,
-                              ),
-                            ),
-                            trailing: IconButton(
-                              icon: Icon(
-                                Icons.info_outline,
-                                color: Colors.grey.shade600,
-                              ),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => HabitDetailScreen(habit: habit),
-                                  ),
-                                );
-                              },
-                            ),
-                            onLongPress: () {
-                              habitProvider.deleteHabit(habit.id);
-                            },
-                          ),
-                        );
+                          );
+                        },
+                      ),
+                      onLongPress: () {
+                        habitProvider.deleteHabit(habit.id);
                       },
                     ),
+                  );
+                },
+              ),
             ),
           ],
         );
@@ -393,11 +506,11 @@ class _HomeScreenState extends State<HomeScreen> {
       body: _getCurrentScreen(),
       floatingActionButton: _selectedIndex == 0
           ? FloatingActionButton(
-              onPressed: _addHabit,
-              backgroundColor: AppColors.primary,
-              elevation: 4,
-              child: const Icon(Icons.add, color: Colors.white, size: 32),
-            )
+        onPressed: _addHabit,
+        backgroundColor: AppColors.primary,
+        elevation: 4,
+        child: const Icon(Icons.add, color: Colors.white, size: 32),
+      )
           : null,
       bottomNavigationBar: Container(
         decoration: BoxDecoration(

@@ -1,15 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/auth_provider.dart';
+import '../providers/achievements_provider.dart';
 import 'badges_screen.dart';
 import 'progress_page_screen.dart';
 
-class AchievementsScreen extends StatelessWidget {
+class AchievementsScreen extends StatefulWidget {
   final bool showAppBar;
 
   const AchievementsScreen({super.key, this.showAppBar = true});
 
   @override
+  State<AchievementsScreen> createState() => _AchievementsScreenState();
+}
+
+class _AchievementsScreenState extends State<AchievementsScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadAchievements();
+    });
+  }
+
+  Future<void> _loadAchievements() async {
+    final authProvider = context.read<AuthProvider>();
+    final achievementsProvider = context.read<AchievementsProvider>();
+
+    if (authProvider.currentUser != null) {
+      await achievementsProvider.calculateAchievements(
+        authProvider.currentUser!.uid,
+      );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final content = Padding(
+    final achievementsProvider = Provider.of<AchievementsProvider>(context);
+
+    final content = achievementsProvider.isLoading
+        ? const Center(child: CircularProgressIndicator())
+        : Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -21,7 +52,7 @@ class AchievementsScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.05),
+                  color: Colors.black.withOpacity(0.05),
                   blurRadius: 10,
                   offset: const Offset(0, 4),
                 ),
@@ -126,11 +157,20 @@ class AchievementsScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                _buildSummaryRow('Longest Streak:', '7 days'),
+                _buildSummaryRow(
+                  'Longest Streak:',
+                  '${achievementsProvider.longestStreak} days',
+                ),
                 const Divider(height: 24),
-                _buildSummaryRow('Habits Completed:', '142'),
+                _buildSummaryRow(
+                  'Habits Completed:',
+                  '${achievementsProvider.totalCompletions}',
+                ),
                 const Divider(height: 24),
-                _buildSummaryRow('Badges Earned:', '4 / 9'),
+                _buildSummaryRow(
+                  'Badges Earned:',
+                  '${achievementsProvider.unlockedBadges} / 6',
+                ),
               ],
             ),
           ),
@@ -138,13 +178,13 @@ class AchievementsScreen extends StatelessWidget {
       ),
     );
 
-    if (showAppBar) {
+    if (widget.showAppBar) {
       return Scaffold(
         appBar: AppBar(
-          title: Row(
+          title: const Row(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
-            children: const [
+            children: [
               Icon(Icons.emoji_events, size: 20, color: Colors.deepPurple),
               SizedBox(width: 6),
               Text("Achievements"),
