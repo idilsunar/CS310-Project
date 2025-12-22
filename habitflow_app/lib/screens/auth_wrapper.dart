@@ -14,6 +14,8 @@ class AuthWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer2<AuthProvider, PreferencesProvider>(
       builder: (context, authProvider, prefsProvider, _) {
+        debugPrint('AuthWrapper rebuilding. Loading: ${authProvider.isLoading}, User: ${authProvider.currentUser?.uid}');
+        
         if (prefsProvider.isLoading || authProvider.isLoading) {
           return const Scaffold(
             body: Center(child: CircularProgressIndicator()),
@@ -21,10 +23,12 @@ class AuthWrapper extends StatelessWidget {
         }
 
         if (authProvider.currentUser != null) {
+          debugPrint('AuthWrapper: Redirecting to HomeScreen');
           return const HomeScreen();
         }
 
         if (prefsProvider.hasCompletedOnboarding) {
+          debugPrint('AuthWrapper: Redirecting to LoginScreen1');
           return const LoginScreen1();
         } else {
           return const OnboardingPage1();
