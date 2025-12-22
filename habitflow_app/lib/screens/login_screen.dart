@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
 import '../utils/app_colors.dart';
+import '../providers/preferences_provider.dart';
 
 class LoginScreen1 extends StatefulWidget {
   const LoginScreen1({super.key});
@@ -60,6 +61,7 @@ class _LoginScreen1State extends State<LoginScreen1> {
         ),
       );
     } else if (authProvider.currentUser != null) {
+      context.read<PreferencesProvider>().saveTab(0);
       ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -67,6 +69,9 @@ class _LoginScreen1State extends State<LoginScreen1> {
           duration: Duration(seconds: 2),
         ),
       );
+      if (mounted && Navigator.canPop(context)) {
+        Navigator.pop(context);
+      }
     } else {
       ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(context).showSnackBar(
@@ -266,7 +271,8 @@ class _LoginScreen2State extends State<LoginScreen2> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(authProvider.error ?? 'Sign up failed')),
       );
-    }  else {
+    } else {
+      context.read<PreferencesProvider>().saveTab(0);
       if (mounted) {
         Navigator.pop(context);
       }
