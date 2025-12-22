@@ -25,7 +25,10 @@ class _LoginScreen1State extends State<LoginScreen1> {
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
 
+    debugPrint('Login button pressed. Email: $email');
+
     if (email.isEmpty || password.isEmpty) {
+      debugPrint('Validation failed: Empty email or password');
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please enter email and password')),
       );
@@ -33,13 +36,43 @@ class _LoginScreen1State extends State<LoginScreen1> {
     }
 
     final authProvider = context.read<AuthProvider>();
+    authProvider.clearError();
+    debugPrint('Calling authProvider.login...');
     await authProvider.login(email, password);
+    debugPrint('authProvider.login completed. Error: ${authProvider.error}');
 
     if (!mounted) return;
 
-    if (authProvider.error != null) {
+    if (authProvider.error != null && authProvider.error!.isNotEmpty) {
+      String userMessage;
+      if (authProvider.error!.contains('No user found')) {
+        userMessage = 'Account does not exist';
+      } else if (authProvider.error!.contains('Wrong password')) {
+        userMessage = 'Incorrect password';
+      } else {
+        userMessage = authProvider.error!;
+      }
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(authProvider.error ?? 'Login failed')),
+        SnackBar(
+          content: Text(userMessage),
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    } else if (authProvider.currentUser != null) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Login successful'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Login failed: unknown error'),
+          duration: Duration(seconds: 3),
+        ),
       );
     }
   }
@@ -51,9 +84,10 @@ class _LoginScreen1State extends State<LoginScreen1> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Consumer<AuthProvider>(
-            builder: (context, authProvider, _) {
-              return Column(
+          child: SingleChildScrollView(
+            child: Consumer<AuthProvider>(
+                builder: (context, authProvider, _) {
+                  return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 40),
@@ -184,6 +218,7 @@ class _LoginScreen1State extends State<LoginScreen1> {
           ),
         ),
       ),
+      ),
     );
   }
 }
@@ -222,7 +257,7 @@ class _LoginScreen2State extends State<LoginScreen2> {
     }
 
     final authProvider = context.read<AuthProvider>();
-    await authProvider.signUp(email, password);
+    await authProvider.signUp(email, password, name);
 
     if (!mounted) return;
 

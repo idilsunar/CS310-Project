@@ -4,7 +4,7 @@ import '../repositories/auth_repository.dart';
 
 class AuthProvider extends ChangeNotifier {
   final AuthRepository _authRepository = AuthRepository();
-  
+
   User? _currentUser;
   bool _isLoading = false;
   String? _error;
@@ -26,13 +26,13 @@ class AuthProvider extends ChangeNotifier {
     });
   }
 
-  Future<void> signUp(String email, String password) async {
+  Future<void> signUp(String email, String password, String name) async {
     _isLoading = true;
     _error = null;
     notifyListeners();
 
     try {
-      final user = await _authRepository.signUpWithEmail(email, password);
+      final user = await _authRepository.signUpWithEmail(email, password, name);
       _currentUser = user;
       _error = null;
     } catch (e) {
@@ -44,15 +44,18 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<void> login(String email, String password) async {
+    debugPrint('AuthProvider: login called with $email');
     _isLoading = true;
     _error = null;
     notifyListeners();
 
     try {
       final user = await _authRepository.loginWithEmail(email, password);
+      debugPrint('AuthProvider: Login successful. User: ${user?.uid}');
       _currentUser = user;
       _error = null;
     } catch (e) {
+      debugPrint('AuthProvider: Login failed. Error: $e');
       _error = e.toString();
     } finally {
       _isLoading = false;
