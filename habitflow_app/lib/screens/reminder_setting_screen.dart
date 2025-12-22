@@ -1,147 +1,83 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/reminder_provider.dart';
+import '../providers/auth_provider.dart';
+import '../models/reminder.dart';
 
-class ReminderSettingScreen extends StatefulWidget {
+class ReminderSettingScreen extends StatelessWidget {
   const ReminderSettingScreen({super.key});
 
   @override
-  State<ReminderSettingScreen> createState() => _ReminderSettingScreenState();
-}
-
-class _ReminderSettingScreenState extends State<ReminderSettingScreen> {
-  String selectedHabit = "Habit Selection";
-  TimeOfDay? selectedTime;
-  List<bool> weekDays = List.generate(7, (_) => false);
-
-  final List<String> days = ["M", "T", "W", "T", "F", "S", "S"];
-
-  Future<void> pickTime() async {
-    final picked = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-    );
-
-    if (picked != null) {
-      setState(() {
-        selectedTime = picked;
-      });
-    }
-  }
-
-  InputDecoration myDecoration(String hint) {
-    return InputDecoration(
-      hintText: hint,
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
-    );
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final provider = context.watch<ReminderProvider>();
+    final auth = context.read<AuthProvider>();
+
+    final reminder = provider.reminder ??
+        Reminder(
+          habit: "Reading",
+          time: "08:00",
+          days: List.generate(7, (_) => false),
+        );
+
+    final days = ["M", "T", "W", "T", "F", "S", "S"];
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Reminder Settings"),
-      ),
+      appBar: AppBar(title: const Text("Reminder Settings")),
       body: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "Set daily reminders for your habits.",
-              style: TextStyle(fontSize: 16),
-            ),
-            const SizedBox(height: 32),
-            Row(
-              children: const [
-                Icon(Icons.list),
-                SizedBox(width: 10),
-                Text("Habit Selection", style: TextStyle(fontSize: 16)),
-              ],
-            ),
-            const SizedBox(height: 8),
             DropdownButtonFormField<String>(
-              decoration: myDecoration("Habit Selection"),
-              initialValue: selectedHabit,
-              items: [
-                "Habit Selection",
-                "Reading",
-                "Workout",
-                "Study",
-                "Meditation",
-              ].map((x) => DropdownMenuItem(value: x, child: Text(x))).toList(),
-              onChanged: (value) {
-                setState(() {
-                  selectedHabit = value!;
-                });
+              value: reminder.habit,
+              items: ["Reading", "Workout", "Study", "Meditation"]
+                  .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                  .toList(),
+              onChanged: (v) {
+                provider.saveReminder(
+                  reminder.copyWith(habit: v!),
+                  auth.currentUser!.uid,
+                );
               },
             ),
-            const SizedBox(height: 32),
-            Row(
-              children: const [
-                Icon(Icons.access_time),
-                SizedBox(width: 10),
-                Text("Time Setting", style: TextStyle(fontSize: 16)),
-              ],
+
+            const SizedBox(height: 20),
+
+            ElevatedButton(
+              onPressed: () async {
+                final picked = await showTimePicker(
+                  context: context,
+                  initialTime: TimeOfDay.now(),
+                );
+                if (picked != null) {
+                  provider.saveReminder(
+                    reminder.copyWith(time: picked.format(context)),
+                    auth.currentUser!.uid,
+                  );
+                }
+              },
+              child: Text(reminder.time),
             ),
-            const SizedBox(height: 8),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: pickTime,
-                child: Text(
-                  selectedTime == null
-                      ? "Pick Time"
-                      : selectedTime!.format(context),
-                ),
-              ),
-            ),
-            const SizedBox(height: 32),
-            Row(
-              children: const [
-                Icon(Icons.calendar_month),
-                SizedBox(width: 10),
-                Text("Repeat Days", style: TextStyle(fontSize: 16)),
-              ],
-            ),
-            const SizedBox(height: 8),
+
+            const SizedBox(height: 20),
+
             Wrap(
               spacing: 8,
               children: List.generate(7, (i) {
                 return ChoiceChip(
                   label: Text(days[i]),
-                  selected: weekDays[i],
-                  onSelected: (value) {
-                    setState(() {
-                      weekDays[i] = value;
-                    });
+                  selected: reminder.days[i],
+                  onSelected: (v) {
+                    final updatedDays = List<bool>.from(reminder.days);
+                    updatedDays[i] = v;
+                    provider.saveReminder(
+                      reminder.copyWith(days: updatedDays),
+                      auth.currentUser!.uid,
+                    );
                   },
                 );
               }),
             ),
-            const Spacer(),
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text("Save Reminders"),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: OutlinedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text("Cancel"),
-                  ),
-                ),
-              ],
-            )
           ],
         ),
       ),
