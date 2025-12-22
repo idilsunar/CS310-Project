@@ -50,18 +50,18 @@ class AchievementsProvider extends ChangeNotifier {
               .timeout(const Duration(seconds: 5));
           allCompletions.addAll(monthCompletions);
         } catch (e) {
-          print('Error fetching month $monthDate: $e');
+          debugPrint('Error fetching month $monthDate: $e');
         }
       }
 
-      print('🎯 Total completions fetched: ${allCompletions.length}');
+      debugPrint('🎯 Total completions fetched: ${allCompletions.length}');
 
       // Calculate total completions
       _totalCompletions = allCompletions
           .where((c) => c.status == CompletionStatus.completed)
           .length;
 
-      print('✅ Completed habits: $_totalCompletions');
+      debugPrint('✅ Completed habits: $_totalCompletions');
 
       // Calculate streaks
       _calculateStreaks(allCompletions);
@@ -72,7 +72,7 @@ class AchievementsProvider extends ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     } catch (e) {
-      print('Error calculating achievements: $e');
+      debugPrint('Error calculating achievements: $e');
       _isLoading = false;
       notifyListeners();
     }
@@ -151,8 +151,8 @@ class AchievementsProvider extends ChangeNotifier {
 
     _longestStreak = longestStreak > currentStreak ? longestStreak : currentStreak;
 
-    print('📊 Current Streak: $_currentStreak days');
-    print('🏆 Longest Streak: $_longestStreak days');
+    debugPrint('📊 Current Streak: $_currentStreak days');
+    debugPrint('🏆 Longest Streak: $_longestStreak days');
   }
 
   void _calculateUnlockedBadges() {
@@ -180,7 +180,7 @@ class AchievementsProvider extends ChangeNotifier {
           c.status == CompletionStatus.completed)
           .length;
     } catch (e) {
-      print('Error getting habit completion count: $e');
+      debugPrint('Error getting habit completion count: $e');
       return 0;
     }
   }

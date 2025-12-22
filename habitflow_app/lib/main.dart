@@ -5,14 +5,14 @@ import 'providers/auth_provider.dart';
 import 'providers/habit_provider.dart';
 import 'providers/preferences_provider.dart';
 import 'screens/auth_wrapper.dart';
-import 'firebase_options.dart';
+// import 'firebase_options.dart';
 import 'providers/achievements_provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   try {
     await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
+      // options: DefaultFirebaseOptions.currentPlatform,
     );
   } catch (e) {
     debugPrint('Firebase initialization error: $e');

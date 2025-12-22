@@ -105,7 +105,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
         color: color,
         boxShadow: [
           BoxShadow(
-            color: color.withOpacity(0.4),
+            color: color.withValues(alpha: 0.4),
             blurRadius: 2,
             spreadRadius: 1,
           ),
@@ -191,7 +191,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                         : 'Missed',
                   ),
                 );
-              }).toList(),
+              }),
             ],
           ),
         ),
@@ -244,21 +244,21 @@ class _CalendarScreenState extends State<CalendarScreen> {
         final userHabits = habitProvider.habits;
 
         // DEBUG: Print completions
-        print('🔍 Total completions fetched: ${completions.length}');
+        debugPrint('🔍 Total completions fetched: ${completions.length}');
         for (var c in completions) {
-          print('📅 Completion: ${c.date} | Status: ${c.status.value} | HabitID: ${c.habitId}');
+          debugPrint('📅 Completion: ${c.date} | Status: ${c.status.value} | HabitID: ${c.habitId}');
         }
 
         // Group completions by date
         final Map<String, List<HabitCompletion>> completionsByDate = {};
         for (var completion in completions) {
           final dateKey = '${completion.date.year}-${completion.date.month}-${completion.date.day}';
-          print('🗓️ Date key: $dateKey for completion ${completion.id}');
+          debugPrint('🗓️ Date key: $dateKey for completion ${completion.id}');
           completionsByDate[dateKey] = completionsByDate[dateKey] ?? [];
           completionsByDate[dateKey]!.add(completion);
         }
 
-        print('📊 Grouped completions by date: ${completionsByDate.keys.toList()}');
+        debugPrint('📊 Grouped completions by date: ${completionsByDate.keys.toList()}');
 
         return Column(
           children: [
@@ -333,7 +333,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                         borderRadius: BorderRadius.circular(12),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.05),
+                            color: Colors.black.withValues(alpha: 0.05),
                             blurRadius: 4,
                             offset: const Offset(0, 2),
                           ),

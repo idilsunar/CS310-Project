@@ -169,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: ElevatedButton(
         onPressed: () => Navigator.pop(context, value),
         style: ElevatedButton.styleFrom(
-          backgroundColor: color.withOpacity(0.1),
+          backgroundColor: color.withValues(alpha: 0.1),
           foregroundColor: color,
           padding: const EdgeInsets.all(16),
           shape: RoundedRectangleBorder(
@@ -439,10 +439,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               );
 
                               // Refresh achievements after marking
-                              if (mounted) {
-                                final achievementsProvider = context.read<AchievementsProvider>();
-                                await achievementsProvider.calculateAchievements(userId);
-                              }
+                              if (!mounted) return;
+                              final achievementsProvider = context.read<AchievementsProvider>();
+                              if (!mounted) return;
+                              await achievementsProvider.calculateAchievements(userId);
                             }
                           }
                         },

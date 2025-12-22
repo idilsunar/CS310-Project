@@ -265,7 +265,7 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
       ),
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: DropdownButtonFormField<String>(
-        value: value,
+        initialValue: value,
         decoration: const InputDecoration(border: InputBorder.none),
         dropdownColor: isDark ? const Color(0xFF1E1E1E) : Colors.white,
         icon: const Icon(Icons.keyboard_arrow_down),
