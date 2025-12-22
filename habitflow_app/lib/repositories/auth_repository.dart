@@ -73,6 +73,8 @@ class AuthRepository {
         return 'Wrong password provided';
       case 'invalid-email':
         return 'Invalid email address';
+      case 'invalid-credential':
+        return 'Invalid email or password';
       case 'user-disabled':
         return 'This account has been disabled';
       case 'too-many-requests':
