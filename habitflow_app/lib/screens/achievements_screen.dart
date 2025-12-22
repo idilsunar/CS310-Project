@@ -37,6 +37,8 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     final achievementsProvider = Provider.of<AchievementsProvider>(context);
 
     final content = achievementsProvider.isLoading
@@ -49,9 +51,14 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
           Container(
             padding: const EdgeInsets.all(32),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: isDark
+                  ? theme.colorScheme.surface
+                  : Colors.white,
               borderRadius: BorderRadius.circular(20),
-              boxShadow: [
+              border: isDark
+                  ? Border.all(color: theme.colorScheme.outline.withOpacity(0.2))
+                  : null,
+              boxShadow: isDark ? null : [
                 BoxShadow(
                   color: Colors.black.withValues(alpha: 0.05),
                   blurRadius: 10,
@@ -67,20 +74,21 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
                   color: AppColors.peach,
                 ),
                 const SizedBox(height: 24),
-                const Text(
+                Text(
                   'Achievements',
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
+                    color: theme.colorScheme.onSurface,
                   ),
                 ),
                 const SizedBox(height: 12),
-                const Text(
+                Text(
                   'Track your progress and unlock badges',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 14,
-                    color: Colors.grey,
+                    color: theme.colorScheme.onSurface.withOpacity(0.6),
                   ),
                 ),
                 const SizedBox(height: 32),
@@ -101,8 +109,12 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                     ),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.navyBlue,
-                      foregroundColor: Colors.white,
+                      backgroundColor: isDark
+                          ? theme.colorScheme.primaryContainer
+                          : AppColors.navyBlue,
+                      foregroundColor: isDark
+                          ? theme.colorScheme.onPrimaryContainer
+                          : Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       elevation: 2,
                       shape: RoundedRectangleBorder(
@@ -145,32 +157,47 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: Colors.grey.shade50,
+              color: isDark
+                  ? theme.colorScheme.surface.withOpacity(0.5)
+                  : Colors.grey.shade50,
               borderRadius: BorderRadius.circular(12),
+              border: isDark
+                  ? Border.all(color: theme.colorScheme.outline.withOpacity(0.2))
+                  : null,
             ),
             child: Column(
               children: [
-                const Text(
+                Text(
                   'User Summary',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
+                    color: theme.colorScheme.onSurface,
                   ),
                 ),
                 const SizedBox(height: 16),
                 _buildSummaryRow(
+                  theme,
                   'Longest Streak:',
                   '${achievementsProvider.longestStreak} days',
                 ),
-                const Divider(height: 24),
+                Divider(
+                  height: 24,
+                  color: theme.colorScheme.outline.withOpacity(0.2),
+                ),
                 _buildSummaryRow(
+                  theme,
                   'Habits Completed:',
                   '${achievementsProvider.totalCompletions}',
                 ),
-                const Divider(height: 24),
+                Divider(
+                  height: 24,
+                  color: theme.colorScheme.outline.withOpacity(0.2),
+                ),
                 _buildSummaryRow(
+                  theme,
                   'Badges Earned:',
-                  '${achievementsProvider.unlockedBadges} / 6',
+                  '${achievementsProvider.unlockedBadges} / 9',
                 ),
               ],
             ),
@@ -182,13 +209,13 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
     if (widget.showAppBar) {
       return Scaffold(
         appBar: AppBar(
-          title: const Row(
+          title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(Icons.emoji_events, size: 20, color: AppColors.peach),
-              SizedBox(width: 6),
-              Text("Achievements"),
+              const SizedBox(width: 6),
+              Text("Achievements", style: TextStyle(color: theme.colorScheme.onSurface)),
             ],
           ),
           centerTitle: true,
@@ -200,19 +227,23 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
     return content;
   }
 
-  Widget _buildSummaryRow(String label, String value) {
+  Widget _buildSummaryRow(ThemeData theme, String label, String value) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           label,
-          style: const TextStyle(fontSize: 15, color: Colors.grey),
+          style: TextStyle(
+            fontSize: 15,
+            color: theme.colorScheme.onSurface.withOpacity(0.6),
+          ),
         ),
         Text(
           value,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.bold,
+            color: theme.colorScheme.onSurface,
           ),
         ),
       ],

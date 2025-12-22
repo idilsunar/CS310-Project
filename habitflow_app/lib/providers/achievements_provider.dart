@@ -17,13 +17,20 @@ class AchievementsProvider extends ChangeNotifier {
   int get unlockedBadges => _unlockedBadges;
   bool get isLoading => _isLoading;
 
-  // Badge unlock status
+  // Badge unlock status - Streaks
   bool get has7DayStreak => _longestStreak >= 7;
   bool get has30DayStreak => _longestStreak >= 30;
   bool get has100DayStreak => _longestStreak >= 100;
-  bool get hasHydrationHero => _totalCompletions >= 10; // Example: 10 water habits
-  bool get hasFitnessFreak => _totalCompletions >= 20; // Example: 20 exercise habits
-  bool get hasSleepGuardian => _totalCompletions >= 15; // Example: 15 sleep habits
+  
+  // Badge unlock status - Completion Milestones
+  bool get hasFirstSteps => _totalCompletions >= 10;
+  bool get hasGettingStarted => _totalCompletions >= 25;
+  bool get hasHabitMaster => _totalCompletions >= 50;
+  
+  // Badge unlock status - Champion Badges
+  bool get hasCenturyClub => _totalCompletions >= 100;
+  bool get hasDedicationLegend => _totalCompletions >= 250;
+  bool get hasUltimateChampion => _totalCompletions >= 500;
 
   Future<void> calculateAchievements(String userId) async {
     _isLoading = true;
@@ -161,9 +168,12 @@ class AchievementsProvider extends ChangeNotifier {
     if (has7DayStreak) _unlockedBadges++;
     if (has30DayStreak) _unlockedBadges++;
     if (has100DayStreak) _unlockedBadges++;
-    if (hasHydrationHero) _unlockedBadges++;
-    if (hasFitnessFreak) _unlockedBadges++;
-    if (hasSleepGuardian) _unlockedBadges++;
+    if (hasFirstSteps) _unlockedBadges++;
+    if (hasGettingStarted) _unlockedBadges++;
+    if (hasHabitMaster) _unlockedBadges++;
+    if (hasCenturyClub) _unlockedBadges++;
+    if (hasDedicationLegend) _unlockedBadges++;
+    if (hasUltimateChampion) _unlockedBadges++;
   }
 
   // Get habit-specific completion count
