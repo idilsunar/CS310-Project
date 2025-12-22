@@ -222,7 +222,7 @@ class _LoginScreen2State extends State<LoginScreen2> {
     }
 
     final authProvider = context.read<AuthProvider>();
-    await authProvider.signUp(email, password);
+    await authProvider.signUp(email, password, name);
 
     if (!mounted) return;
 
