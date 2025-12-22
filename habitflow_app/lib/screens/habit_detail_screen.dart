@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/habit.dart';
 import '../providers/habit_provider.dart';
+import '../utils/app_colors.dart';
 
 class HabitDetailScreen extends StatefulWidget {
   final Habit habit;
@@ -230,14 +231,14 @@ class _HabitDetailScreenState extends State<HabitDetailScreen> {
                   style: OutlinedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14)),
-                    side: const BorderSide(color: Color(0xFF6A00FF), width: 1.4),
+                    side: BorderSide(color: AppColors.navyBlue, width: 1.4),
                   ),
                   onPressed: _saveEdits,
-                  child: const Text(
+                  child: Text(
                     "Save changes",
                     style: TextStyle(
                       fontSize: 17,
-                      color: Color(0xFF6A00FF),
+                      color: AppColors.navyBlue,
                       fontWeight: FontWeight.w600,
                     ),
                   ),

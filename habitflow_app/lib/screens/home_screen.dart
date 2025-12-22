@@ -36,13 +36,13 @@ class _HomeScreenState extends State<HomeScreen> {
       case 'Orange':
         return Colors.orange;
       case 'Blue':
-        return Colors.blue;
+        return AppColors.turquoise;
       case 'Green':
         return Colors.green;
       case 'Yellow':
         return Colors.yellow;
       case 'Purple':
-        return Colors.purple;
+        return AppColors.navyBlue;
       case 'Grey':
         return Colors.grey;
       default:
@@ -249,12 +249,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 50,
                       ),
                       const SizedBox(width: 12),
-                      const Text(
-                        'Habit Flow',
+                      Text(
+                        'Habit flow',
                         style: TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF6B4EFF),
+                          color: AppColors.navyBlue,
                           letterSpacing: 0.5,
                         ),
                       ),
@@ -265,9 +265,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: const EdgeInsets.only(left: 4),
                     child: Text(
                       'Welcome ${authProvider.currentUser?.email ?? 'User'}, lets improve!',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 15,
-                        color: Colors.black87,
+                        color: AppColors.textLight,
                         fontWeight: FontWeight.w500,
                       ),
                     ),

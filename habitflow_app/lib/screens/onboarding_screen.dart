@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/preferences_provider.dart';
+import '../utils/app_colors.dart';
 import 'login_screen.dart';
 
 class OnboardingPage1 extends StatelessWidget {
@@ -9,7 +10,7 @@ class OnboardingPage1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Stack(
           children: [
@@ -21,31 +22,31 @@ class OnboardingPage1 extends StatelessWidget {
                     width: 120,
                     height: 120,
                     decoration: BoxDecoration(
-                      color: Colors.blue.shade100,
+                      color: AppColors.lightTurquoise.withOpacity(0.3),
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.track_changes,
                       size: 60,
-                      color: Colors.blue,
+                      color: AppColors.turquoise,
                     ),
                   ),
                   const SizedBox(height: 24),
-                  const Text(
+                  Text(
                     "Welcome to Habitflow",
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.w600,
-                      color: Colors.blue,
+                      color: AppColors.navyBlue,
                     ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 8),
-                  const Text(
+                  Text(
                     "Your daily habit tracker",
                     style: TextStyle(
                       fontSize: 16,
-                      color: Colors.blue,
+                      color: AppColors.textLight,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -90,7 +91,7 @@ class OnboardingPage2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Stack(
           children: [
@@ -102,33 +103,33 @@ class OnboardingPage2 extends StatelessWidget {
                     width: 120,
                     height: 120,
                     decoration: BoxDecoration(
-                      color: Colors.blue.shade100,
+                      color: AppColors.lightPeach.withOpacity(0.5),
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.checklist,
                       size: 60,
-                      color: Colors.blue,
+                      color: AppColors.peach,
                     ),
                   ),
                   const SizedBox(height: 24),
-                  const Text(
+                  Text(
                     "Create your routine",
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.w600,
-                      color: Colors.blue,
+                      color: AppColors.navyBlue,
                     ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 8),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                    child: const Text(
+                    child: Text(
                       "Choose habits you want to focus on and make them part of your life",
                       style: TextStyle(
                         fontSize: 16,
-                        color: Colors.blue,
+                        color: AppColors.textLight,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -174,7 +175,7 @@ class OnboardingPage3 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Stack(
           children: [
@@ -186,33 +187,33 @@ class OnboardingPage3 extends StatelessWidget {
                     width: 120,
                     height: 120,
                     decoration: BoxDecoration(
-                      color: Colors.blue.shade100,
+                      color: AppColors.lightTurquoise.withOpacity(0.3),
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.directions_run,
                       size: 60,
-                      color: Colors.blue,
+                      color: AppColors.turquoise,
                     ),
                   ),
                   const SizedBox(height: 24),
-                  const Text(
+                  Text(
                     "Track your habits",
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.w600,
-                      color: Colors.blue,
+                      color: AppColors.navyBlue,
                     ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 8),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                    child: const Text(
+                    child: Text(
                       "Record your progress easily and review your performance",
                       style: TextStyle(
                         fontSize: 16,
-                        color: Colors.blue,
+                        color: AppColors.textLight,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -258,7 +259,7 @@ class OnboardingPage4 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Stack(
           children: [
@@ -270,33 +271,33 @@ class OnboardingPage4 extends StatelessWidget {
                     width: 120,
                     height: 120,
                     decoration: BoxDecoration(
-                      color: Colors.blue.shade100,
+                      color: AppColors.lightPeach.withOpacity(0.5),
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.notifications_active,
                       size: 60,
-                      color: Colors.blue,
+                      color: AppColors.peach,
                     ),
                   ),
                   const SizedBox(height: 24),
-                  const Text(
+                  Text(
                     "Keep the momentum",
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.w600,
-                      color: Colors.blue,
+                      color: AppColors.navyBlue,
                     ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 8),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                    child: const Text(
+                    child: Text(
                       "Stay consistent with optimizable reminders and notifications",
                       style: TextStyle(
                         fontSize: 16,
-                        color: Colors.blue,
+                        color: AppColors.textLight,
                       ),
                       textAlign: TextAlign.center,
                     ),

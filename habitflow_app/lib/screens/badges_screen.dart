@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../utils/app_colors.dart';
 
 class BadgesScreen extends StatelessWidget {
   const BadgesScreen({super.key});
@@ -146,7 +147,7 @@ class BadgesScreen extends StatelessWidget {
         children: [
           _buildBadgeCategory(
             'Consistency Badges',
-            Colors.purple,
+            AppColors.peach,
             [
               badgeRow("7 day streak", "🔥", true),
               badgeRow("30 day streak", "🌞", false),
@@ -164,7 +165,7 @@ class BadgesScreen extends StatelessWidget {
           ),
           _buildBadgeCategory(
             'Study Badges',
-            Colors.blue,
+            AppColors.turquoise,
             [
               badgeRow("Study Sage", "📘", true),
               badgeRow("Focus Master", "🎯", false),
@@ -178,10 +179,10 @@ class BadgesScreen extends StatelessWidget {
               legendDot(Colors.green),
               const SizedBox(width: 6),
               const Text("Health   ", style: TextStyle(fontSize: 13)),
-              legendDot(Colors.blue),
+              legendDot(AppColors.turquoise),
               const SizedBox(width: 6),
               const Text("Study   ", style: TextStyle(fontSize: 13)),
-              legendDot(Colors.purple),
+              legendDot(AppColors.peach),
               const SizedBox(width: 6),
               const Text("Consistency", style: TextStyle(fontSize: 13)),
             ],

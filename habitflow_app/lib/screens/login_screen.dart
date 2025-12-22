@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
+import '../utils/app_colors.dart';
 
 class LoginScreen1 extends StatefulWidget {
   const LoginScreen1({super.key});
@@ -80,7 +81,7 @@ class _LoginScreen1State extends State<LoginScreen1> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -91,29 +92,29 @@ class _LoginScreen1State extends State<LoginScreen1> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 40),
-                  const Text("Login",
+                  Text("Login",
                     style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
-                      color: Colors.blue,
+                      color: AppColors.navyBlue,
                     ),
                   ),
                   const SizedBox(height: 8),
                   Text("Login to continue", style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                   ),
                   const SizedBox(height: 60),
-                  const Text("Email",
+                  Text("Email",
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: Colors.blue,
+                      color: AppColors.navyBlue,
                     ),
                   ),
                   const SizedBox(height: 8),
                   TextField(
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
-                    style: const TextStyle(color: Colors.blue),
+                    style: TextStyle(color: AppColors.navyBlue),
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -124,12 +125,12 @@ class _LoginScreen1State extends State<LoginScreen1> {
                     ),
                   ),
                   const SizedBox(height: 24),
-                  const Text("Password", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.blue,),),
+                  Text("Password", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.navyBlue,),),
                   const SizedBox(height: 8),
                   TextField(
                     controller: _passwordController,
                     obscureText: true,
-                    style: const TextStyle(color: Colors.blue),
+                    style: TextStyle(color: AppColors.navyBlue),
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -152,7 +153,7 @@ class _LoginScreen1State extends State<LoginScreen1> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(6),
                         ),
-                        activeColor: Colors.blue,
+                        activeColor: AppColors.turquoise,
                       ),
                       const SizedBox(width: 8),
                       const Text("Remember me", style: TextStyle(fontSize: 16, color: Colors.black87),),
@@ -202,7 +203,7 @@ class _LoginScreen1State extends State<LoginScreen1> {
                                   text: "Sign Up",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.blue,
+                                    color: AppColors.turquoise,
                                   ),
                                 ),
                               ],
@@ -275,7 +276,7 @@ class _LoginScreen2State extends State<LoginScreen2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -286,12 +287,12 @@ class _LoginScreen2State extends State<LoginScreen2> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 40),
-                    const Text(
+                    Text(
                       "Sign Up",
                       style: TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
-                        color: Colors.blue,
+                        color: AppColors.navyBlue,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -300,18 +301,18 @@ class _LoginScreen2State extends State<LoginScreen2> {
                       style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                     ),
                     const SizedBox(height: 40),
-                    const Text(
+                    Text(
                       "Name",
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Colors.blue,
+                        color: AppColors.navyBlue,
                       ),
                     ),
                     const SizedBox(height: 8),
                     TextField(
                       controller: _nameController,
-                      style: const TextStyle(color: Colors.blue),
+                      style: TextStyle(color: AppColors.navyBlue),
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -322,19 +323,19 @@ class _LoginScreen2State extends State<LoginScreen2> {
                       ),
                     ),
                     const SizedBox(height: 24),
-                    const Text(
+                    Text(
                       "Email",
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Colors.blue,
+                        color: AppColors.navyBlue,
                       ),
                     ),
                     const SizedBox(height: 8),
                     TextField(
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
-                      style: const TextStyle(color: Colors.blue),
+                      style: TextStyle(color: AppColors.navyBlue),
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -345,19 +346,19 @@ class _LoginScreen2State extends State<LoginScreen2> {
                       ),
                     ),
                     const SizedBox(height: 24),
-                    const Text(
+                    Text(
                       "Password",
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Colors.blue,
+                        color: AppColors.navyBlue,
                       ),
                     ),
                     const SizedBox(height: 8),
                     TextField(
                       controller: _passwordController,
                       obscureText: true,
-                      style: const TextStyle(color: Colors.blue),
+                      style: TextStyle(color: AppColors.navyBlue),
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -380,7 +381,7 @@ class _LoginScreen2State extends State<LoginScreen2> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(6),
                           ),
-                          activeColor: Colors.blue,
+                          activeColor: AppColors.turquoise,
                         ),
                         const SizedBox(width: 8),
                         const Text(
@@ -426,7 +427,7 @@ class _LoginScreen2State extends State<LoginScreen2> {
                                     text: "Login",
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      color: Colors.blue,
+                                      color: AppColors.turquoise,
                                     ),
                                   ),
                                 ],

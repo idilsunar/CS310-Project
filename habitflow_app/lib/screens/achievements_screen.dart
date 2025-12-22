@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
 import '../providers/achievements_provider.dart';
+import '../utils/app_colors.dart';
 import 'badges_screen.dart';
 import 'progress_page_screen.dart';
 
@@ -60,10 +61,10 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
             ),
             child: Column(
               children: [
-                const Icon(
+                Icon(
                   Icons.emoji_events,
                   size: 80,
-                  color: Colors.deepPurple,
+                  color: AppColors.peach,
                 ),
                 const SizedBox(height: 24),
                 const Text(
@@ -100,7 +101,7 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                     ),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepPurple,
+                      backgroundColor: AppColors.navyBlue,
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       elevation: 2,
@@ -128,8 +129,8 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                     ),
                     style: OutlinedButton.styleFrom(
-                      foregroundColor: Colors.deepPurple,
-                      side: const BorderSide(color: Colors.deepPurple, width: 2),
+                      foregroundColor: AppColors.turquoise,
+                      side: BorderSide(color: AppColors.turquoise, width: 2),
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -185,7 +186,7 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.emoji_events, size: 20, color: Colors.deepPurple),
+              Icon(Icons.emoji_events, size: 20, color: AppColors.peach),
               SizedBox(width: 6),
               Text("Achievements"),
             ],

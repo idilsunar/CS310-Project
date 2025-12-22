@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../utils/app_colors.dart';
 
 class ProgressPageScreen extends StatelessWidget {
   const ProgressPageScreen({super.key});
@@ -25,29 +26,29 @@ class ProgressPageScreen extends StatelessWidget {
                       emoji: "🏃‍♂️",
                       title: "Running",
                       percent: 0.2,
-                      color1: Color(0xFF4DB6AC),
-                      color2: Color(0xFF00796B),
+                      color1: AppColors.lightTurquoise,
+                      color2: AppColors.turquoise,
                     ),
                     HabitProgressTile(
                       emoji: "🧘‍♂️",
                       title: "Meditation",
                       percent: 0.4,
-                      color1: Color(0xFF4FC3F7),
-                      color2: Color(0xFF0288D1),
+                      color1: AppColors.turquoise,
+                      color2: AppColors.navyBlue,
                     ),
                     HabitProgressTile(
                       emoji: "😴",
                       title: "Sleeping habits",
                       percent: 0.6,
-                      color1: Color(0xFF7E57C2),
-                      color2: Color(0xFF4A148C),
+                      color1: AppColors.lightPeach,
+                      color2: AppColors.peach,
                     ),
                     HabitProgressTile(
                       emoji: "🥋",
                       title: "Martial arts",
                       percent: 0.8,
-                      color1: Color(0xFFE57373),
-                      color2: Color(0xFFC62828),
+                      color1: AppColors.peach,
+                      color2: AppColors.navyBlue,
                     ),
                   ],
                 ),
@@ -62,15 +63,15 @@ class ProgressPageScreen extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      side: const BorderSide(color: Color(0xFF5C2EF9), width: 2),
+                      side: BorderSide(color: AppColors.navyBlue, width: 2),
                     ),
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: const Text(
+                      child: Text(
                       "Back",
                       style: TextStyle(
-                        color: Color(0xFF5C2EF9),
+                        color: AppColors.navyBlue,
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
                       ),

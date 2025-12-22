@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import 'providers/auth_provider.dart';
 import 'providers/habit_provider.dart';
 import 'providers/preferences_provider.dart';
+import 'providers/reminder_provider.dart';
 import 'screens/auth_wrapper.dart';
-// import 'firebase_options.dart';
 import 'providers/achievements_provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,6 +32,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => HabitProvider()),
         ChangeNotifierProvider(create: (_) => PreferencesProvider()),
         ChangeNotifierProvider(create: (_) => AchievementsProvider()),
+        ChangeNotifierProvider(create: (_) => ReminderProvider()),
       ],
       child: Consumer<PreferencesProvider>(
         builder: (context, prefsProvider, _) {
@@ -39,22 +40,38 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
               brightness: Brightness.light,
-              primarySwatch: Colors.blue,
-              scaffoldBackgroundColor: Colors.white,
+              primaryColor: const Color(0xFF1A405A),
+              scaffoldBackgroundColor: const Color(0xFFF8FCFD),
+              colorScheme: const ColorScheme.light(
+                primary: Color(0xFF1A405A),
+                secondary: Color(0xFF5DBED1),
+                tertiary: Color(0xFFF5C18A),
+                surface: Colors.white,
+                onPrimary: Colors.white,
+                onSecondary: Color(0xFF1A405A),
+              ),
               appBarTheme: const AppBarTheme(
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.black,
+                backgroundColor: Color(0xFFF8FCFD),
+                foregroundColor: Color(0xFF1A405A),
                 elevation: 0,
               ),
             ),
             darkTheme: ThemeData(
               brightness: Brightness.dark,
-              primarySwatch: Colors.blue,
-              scaffoldBackgroundColor: const Color(0xFF121212),
-              cardColor: const Color(0xFF1E1E1E),
+              primaryColor: const Color(0xFF5DBED1),
+              scaffoldBackgroundColor: const Color(0xFF0D1F2D),
+              cardColor: const Color(0xFF1A405A),
+              colorScheme: const ColorScheme.dark(
+                primary: Color(0xFF5DBED1),
+                secondary: Color(0xFFF5C18A),
+                tertiary: Color(0xFF1A405A),
+                surface: Color(0xFF1A405A),
+                onPrimary: Color(0xFF0D1F2D),
+                onSecondary: Color(0xFF0D1F2D),
+              ),
               appBarTheme: const AppBarTheme(
-                backgroundColor: Color(0xFF1E1E1E),
-                foregroundColor: Colors.white,
+                backgroundColor: Color(0xFF1A405A),
+                foregroundColor: Color(0xFF5DBED1),
                 elevation: 0,
               ),
             ),

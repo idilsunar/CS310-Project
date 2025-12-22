@@ -5,6 +5,7 @@ import '../providers/habit_provider.dart';
 import '../repositories/habit_completion_repository.dart';
 import '../models/habit_completion.dart';
 import '../models/habit.dart';
+import '../utils/app_colors.dart';
 
 class CalendarScreen extends StatefulWidget {
   final bool showAppBar;
@@ -136,7 +137,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.blue.shade50,
+                  color: AppColors.lightTurquoise.withOpacity(0.3),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Column(
@@ -266,7 +267,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.blue.shade50,
+                color: AppColors.lightTurquoise.withOpacity(0.3),
                 borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(24),
                   bottomRight: Radius.circular(24),
@@ -350,7 +351,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                   height: 32,
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
-                                    color: Colors.blue.shade50,
+                                    color: AppColors.lightTurquoise.withOpacity(0.3),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Text(
@@ -358,7 +359,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
-                                      color: Colors.blue.shade700,
+                                      color: AppColors.navyBlue,
                                     ),
                                   ),
                                 ),
@@ -389,14 +390,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                             decoration: BoxDecoration(
-                              color: Colors.blue.shade50,
+                              color: AppColors.lightPeach.withOpacity(0.5),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Text(
                               '$completedCount/$totalHabits',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 14,
+                                color: AppColors.navyBlue,
                               ),
                             ),
                           ),
