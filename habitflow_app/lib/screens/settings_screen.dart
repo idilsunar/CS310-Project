@@ -2,18 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
 import '../providers/preferences_provider.dart';
+import 'reminder_setting_screen.dart';
 
-class SettingsScreen extends StatefulWidget {
+class SettingsScreen extends StatelessWidget {
   final bool showAppBar;
-  
+
   const SettingsScreen({super.key, this.showAppBar = true});
 
-  @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
-}
-
-class _SettingsScreenState extends State<SettingsScreen> {
-  Widget buildTile(IconData icon, String title, {VoidCallback? onTap}) {
+  Widget buildTile(
+    BuildContext context,
+    IconData icon,
+    String title, {
+    VoidCallback? onTap,
+  }) {
     return ListTile(
       leading: Icon(icon, size: 28),
       title: Text(title, style: const TextStyle(fontSize: 16)),
@@ -22,82 +23,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  void _showPrivacyDialog() {
+  void _showPrivacyDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Container(
-            padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: Colors.white,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(
-                  Icons.lock_outline,
-                  size: 48,
-                  color: Colors.blue,
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  'Privacy Policy',
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  'We value your privacy and are committed to protecting your personal information. Your habit data is stored locally on your device and is never shared with third parties without your explicit consent.\n\nWe collect minimal data necessary to provide you with the best experience and continuously improve our services.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey,
-                    height: 1.5,
-                  ),
-                ),
-                const SizedBox(height: 24),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    child: const Text(
-                      'OK',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
+      builder: (_) => AlertDialog(
+        title: const Text("Privacy Policy"),
+        content: const Text(
+          "Your data is stored securely and synchronized with Firebase.",
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("OK"),
+          )
+        ],
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Consumer2<AuthProvider, PreferencesProvider>(
-      builder: (context, authProvider, prefsProvider, _) {
+      builder: (context, auth, prefs, _) {
         final content = Padding(
           padding: const EdgeInsets.all(24),
           child: ListView(
@@ -106,63 +53,90 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 children: [
                   const CircleAvatar(
                     radius: 28,
-                    backgroundColor: Colors.grey,
-                    child: Icon(Icons.person, size: 30),
+                    child: Icon(Icons.person),
                   ),
                   const SizedBox(width: 12),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        authProvider.currentUser?.email?.split('@')[0] ?? "HabitFlowUser",
-                        style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold)
+                        auth.currentUser?.email?.split('@')[0] ??
+                            "HabitFlowUser",
+                        style: const TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       Text(
-                        authProvider.currentUser?.email ?? "habitflow@app.com",
-                        style: const TextStyle(color: Colors.grey, fontSize: 14)
+                        auth.currentUser?.email ?? "",
+                        style:
+                            const TextStyle(fontSize: 14, color: Colors.grey),
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
               const SizedBox(height: 20),
               const Divider(),
+
+              /// 🔔 Reminder Settings → ileri geçiş
+              buildTile(
+                context,
+                Icons.notifications,
+                "Reminder Settings",
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const ReminderSettingScreen(),
+                    ),
+                  );
+                },
+              ),
+
+              const Divider(),
+
+              /// 🌙 Dark Mode
               ListTile(
-                leading: const Icon(Icons.dark_mode, size: 28),
-                title: const Text("Dark Mode", style: TextStyle(fontSize: 16)),
+                leading: const Icon(Icons.dark_mode),
+                title: const Text("Dark Mode"),
                 trailing: Switch(
-                  value: prefsProvider.isDarkMode,
-                  onChanged: (value) {
-                    prefsProvider.toggleTheme();
-                  },
+                  value: prefs.isDarkMode,
+                  onChanged: (_) => prefs.toggleTheme(),
                 ),
               ),
+
               const Divider(),
-              buildTile(Icons.lock, "Privacy", onTap: _showPrivacyDialog),
+
+              /// 🔐 Privacy
+              buildTile(
+                context,
+                Icons.lock,
+                "Privacy",
+                onTap: () => _showPrivacyDialog(context),
+              ),
+
               const Divider(),
-              buildTile(Icons.logout, "Logout", onTap: () async {
-                await authProvider.logout();
-              }),
+
+              /// 🚪 Logout
+              buildTile(
+                context,
+                Icons.logout,
+                "Logout",
+                onTap: () async {
+                  await auth.logout();
+                },
+              ),
             ],
           ),
         );
 
-        if (widget.showAppBar) {
-          return Scaffold(
-            appBar: AppBar(
-              title: const Text("Settings"),
-              actions: const [
-                Padding(
-                  padding: EdgeInsets.only(right: 12),
-                  child: Icon(Icons.settings),
-                )
-              ],
-            ),
-            body: content,
-          );
-        }
+        if (!showAppBar) return content;
 
-        return content;
+        return Scaffold(
+          appBar: AppBar(title: const Text("Settings")),
+          body: content,
+        );
       },
     );
   }
