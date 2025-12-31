@@ -1,12 +1,10 @@
-# CS310-Project, HabitFlow - Habit Builder App
+# HabitFlow - Habit Builder App
 
-## Project Description
+## Project Overview
 
-**HabitFlow** is a minimalistic and efficient mobile application developed to help users build and maintain daily habits such as studying, exercising, or drinking water. It allows users to easily track their progress with checkmarks and streak indicators, encouraging consistency and daily discipline without unnecessary distractions.
+HabitFlow is a simple, habit tracking app that helps you build and maintain daily habits. Whether it's studying, exercising, or drinking enough water, HabitFlow makes it easy to track your progress and build streaks.
 
-The app is designed with simplicity and speed in mind—ideal for university students and young professionals who want a clean habit tracker without the complexity of gamification or cluttered dashboards.
-
----
+We built this app because most habit trackers are way too complicated. We wanted something clean and fast that actually helps students and young professionals stay consistent without all the extra fluff.
 
 ## Team Members
 
@@ -18,16 +16,97 @@ The app is designed with simplicity and speed in mind—ideal for university stu
 | İdil Sunar             | 34363      |
 | Ömer Faruk Kocatmaz    | 32458      |
 
+**Course:** CS 310  
+**Screen Designs:** https://miro.com/app/board/uXjVJus1KfA=/
+
 ---
 
-## Course Information
+## Setup Instructions
 
-**Course:** CS 310  
-**Project:** HabitFlow -  Project Proposal  
-**Platform:** Flutter (mobile)  
-**Local Storage:** Hive / SharedPreferences  
+### Prerequisites
 
-**Screen Designs:** https://miro.com/app/board/uXjVJus1KfA=/
+Before you start, make sure you have these installed:
+- Flutter SDK (version 3.0.0 or higher)
+- Dart (comes with Flutter)
+- Android Studio or Xcode (depending on your target platform)
+- A code editor (VS Code or Android Studio recommended)
+
+To check if Flutter is installed correctly:
+```bash
+flutter doctor
+```
+
+### Step 1: Clone the Repository
+
+```bash
+git clone <your-repo-url>
+cd CS310-Project/habitflow_app
+```
+
+### Step 2: Install Dependencies
+
+Run this command to download all the packages we're using:
+```bash
+flutter pub get
+```
+
+### Step 3: Firebase Configuration
+
+The app uses Firebase for user authentication and data storage. We've already included the config files, but if you need to set up your own Firebase project:
+
+#### For Android:
+1. Download `google-services.json` from your Firebase console
+2. Place it in `android/app/`
+
+#### For iOS:
+1. Download `GoogleService-Info.plist` from your Firebase console
+2. Place it in `ios/Runner/`
+
+### Step 4: Run the App
+
+For Android:
+```bash
+flutter run
+```
+
+For iOS (macOS only):
+```bash
+flutter run -d ios
+```
+
+For a specific device:
+```bash
+flutter devices
+flutter run -d <device-id>
+```
+
+---
+
+## Project Structure
+
+```
+habitflow_app/
+├── lib/
+│   ├── main.dart                    # App entry point
+│   ├── models/                      # Data models (Habit, HabitCompletion, Reminder)
+│   ├── providers/                   # State management with Provider
+│   ├── repositories/                # Data layer for Firebase
+│   ├── screens/                     # UI screens
+│   ├── services/                    # Background services (notifications)
+│   └── utils/                       # Helper functions
+├── test/                            # Unit and widget tests
+├── assets/                          # Images and fonts
+└── pubspec.yaml                     # Dependencies
+```
+
+---
+
+## Known Limitations
+
+- **iOS Notifications:** Local notifications might not work perfectly on all iOS versions due to permission handling
+- **Offline Mode:** The app requires an internet connection for Firebase sync. We plan to add offline support in the future
+- **Date Timezone:** Streak calculations might be off if you travel across time zones
+- **No Data Export:** Currently, there's no way to export your habit data (planned for future updates)
 
 ---
 
@@ -45,22 +124,17 @@ flutter test
 
 ### Test Coverage
 
-#### Unit Tests (10 tests)
-**Habit Model Tests** (`test/models/habit_test.dart`)
-- Tests Habit constructor with all properties
-- Tests copyWith method for creating modified copies
-- Tests toFirestore method for data serialization
-- Tests copyWith without parameters returns identical habit
+Our test suite includes:
 
-**HabitCompletion Model Tests** (`test/models/habit_completion_test.dart`)
-- Tests HabitCompletion constructor with all properties
-- Tests copyWith method for updating completion status
-- Tests toFirestore method for data serialization
-- Tests CompletionStatus enum values (completed, partial, missed)
-- Tests CompletionStatus fromString conversion
-- Tests CompletionStatus fromString fallback behavior for invalid values
+**Unit Tests (10 tests):**
+- Habit model tests - checking constructors, copyWith, and Firestore serialization
+- HabitCompletion model tests - testing completion statuses and data conversions
+**Widget Tests (2 tests):**
+- Basic UI rendering tests
+- Habit display and interaction tests
 
-#### Widget Tests (2 tests)
-**Widget Tests** (`test/widget_test.dart`)
-- Tests MaterialApp renders with AppBar and body text
-- Tests Habit information displays correctly in Card widget with Checkbox
+---
+
+## AI Usage Disclosure
+All core decisions about the app's functionality and structure were made by our team. AI was used as a coding assistant to speed up implementation and code/text formatting. 
+
