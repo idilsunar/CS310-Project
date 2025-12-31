@@ -7,15 +7,22 @@ import 'providers/preferences_provider.dart';
 import 'providers/reminder_provider.dart';
 import 'screens/auth_wrapper.dart';
 import 'providers/achievements_provider.dart';
+import 'services/notification_service.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   try {
-    await Firebase.initializeApp(
-      // options: DefaultFirebaseOptions.currentPlatform,
-    );
+    await Firebase.initializeApp();
   } catch (e) {
     debugPrint('Firebase initialization error: $e');
+  }
+
+  try {
+    await NotificationService().initialize();
+    await NotificationService().requestPermissions();
+  } catch (e) {
+    debugPrint('Notification initialization error: $e');
   }
   
   runApp(const MyApp());

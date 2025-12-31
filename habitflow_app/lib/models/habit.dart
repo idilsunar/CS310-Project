@@ -9,6 +9,9 @@ class Habit {
   String? color;
   String createdBy;
   DateTime createdAt;
+  bool hasReminder;
+  String? reminderTime;
+  List<bool>? reminderDays;
 
   Habit({
     required this.id,
@@ -19,6 +22,9 @@ class Habit {
     this.color,
     required this.createdBy,
     required this.createdAt,
+    this.hasReminder = false,
+    this.reminderTime,
+    this.reminderDays,
   });
 
   factory Habit.fromFirestore(DocumentSnapshot doc) {
@@ -32,6 +38,9 @@ class Habit {
       color: data['color'],
       createdBy: data['createdBy'] ?? '',
       createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      hasReminder: data['hasReminder'] ?? false,
+      reminderTime: data['reminderTime'],
+      reminderDays: data['reminderDays'] != null ? List<bool>.from(data['reminderDays']) : null,
     );
   }
 
@@ -44,6 +53,9 @@ class Habit {
       'color': color,
       'createdBy': createdBy,
       'createdAt': Timestamp.fromDate(createdAt),
+      'hasReminder': hasReminder,
+      'reminderTime': reminderTime,
+      'reminderDays': reminderDays,
     };
   }
 
@@ -56,6 +68,9 @@ class Habit {
     String? color,
     String? createdBy,
     DateTime? createdAt,
+    bool? hasReminder,
+    String? reminderTime,
+    List<bool>? reminderDays,
   }) {
     return Habit(
       id: id ?? this.id,
@@ -66,6 +81,9 @@ class Habit {
       color: color ?? this.color,
       createdBy: createdBy ?? this.createdBy,
       createdAt: createdAt ?? this.createdAt,
+      hasReminder: hasReminder ?? this.hasReminder,
+      reminderTime: reminderTime ?? this.reminderTime,
+      reminderDays: reminderDays ?? this.reminderDays,
     );
   }
 }

@@ -5,6 +5,7 @@ class PreferencesProvider extends ChangeNotifier {
   bool _isDarkMode = false;
   bool _hasCompletedOnboarding = false;
   int _lastSelectedTab = 0;
+  bool _notificationsEnabled = true;
   
   String _dailyNote = '';
 
@@ -13,10 +14,13 @@ class PreferencesProvider extends ChangeNotifier {
   bool get isDarkMode => _isDarkMode;
   bool get hasCompletedOnboarding => _hasCompletedOnboarding;
   int get lastSelectedTab => _lastSelectedTab;
+  bool get notificationsEnabled => _notificationsEnabled;
   
   String get dailyNote => _dailyNote;
 
   bool get isLoading => _isLoading;
+
+  String? _currentUserId;
 
   PreferencesProvider() {
     loadPreferences();
@@ -32,13 +36,23 @@ class PreferencesProvider extends ChangeNotifier {
       _hasCompletedOnboarding =
           prefs.getBool('hasCompletedOnboarding') ?? false;
       _lastSelectedTab = prefs.getInt('lastSelectedTab') ?? 0;
-      
-      _dailyNote = prefs.getString('dailyNote') ?? '';
+      _notificationsEnabled = prefs.getBool('notificationsEnabled') ?? true;
     } catch (e) {
       debugPrint('Error loading preferences: $e');
     } finally {
       _isLoading = false;
       notifyListeners();
+    }
+  }
+
+  Future<void> loadUserPreferences(String userId) async {
+    _currentUserId = userId;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      _dailyNote = prefs.getString('dailyNote_$userId') ?? '';
+      notifyListeners();
+    } catch (e) {
+      debugPrint('Error loading user preferences: $e');
     }
   }
 
@@ -96,11 +110,25 @@ class PreferencesProvider extends ChangeNotifier {
     _dailyNote = note;
     notifyListeners();
 
+    if (_currentUserId != null) {
+      try {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('dailyNote_$_currentUserId', note);
+      } catch (e) {
+        debugPrint('Error saving daily note: $e');
+      }
+    }
+  }
+
+  Future<void> setNotificationsEnabled(bool enabled) async {
+    _notificationsEnabled = enabled;
+    notifyListeners();
+
     try {
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('dailyNote', note);
+      await prefs.setBool('notificationsEnabled', enabled);
     } catch (e) {
-      debugPrint('Error saving daily note: $e');
+      debugPrint('Error saving notifications setting: $e');
     }
   }
 
@@ -112,6 +140,7 @@ class PreferencesProvider extends ChangeNotifier {
       _isDarkMode = false;
       _hasCompletedOnboarding = false;
       _lastSelectedTab = 0;
+      _notificationsEnabled = true;
       
       _dailyNote = '';
 

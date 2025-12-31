@@ -78,6 +78,30 @@ class HabitCompletionRepository {
     await _firestore.collection(_collection).doc(completionId).delete();
   }
 
+  /// Delete a habit completion for a specific day
+  Future<void> deleteHabitCompletion(
+      String userId,
+      String habitId,
+      DateTime date,
+      ) async {
+    final dateOnly = DateTime(date.year, date.month, date.day);
+
+    final existingQuery = await _firestore
+        .collection(_collection)
+        .where('userId', isEqualTo: userId)
+        .where('habitId', isEqualTo: habitId)
+        .where('date', isEqualTo: Timestamp.fromDate(dateOnly))
+        .limit(1)
+        .get();
+
+    if (existingQuery.docs.isNotEmpty) {
+      await _firestore
+          .collection(_collection)
+          .doc(existingQuery.docs.first.id)
+          .delete();
+    }
+  }
+
   /// Get completion statistics for a month
   Future<Map<String, dynamic>> getMonthStatistics(String userId, DateTime month) async {
     final startOfMonth = DateTime(month.year, month.month, 1);

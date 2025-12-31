@@ -61,7 +61,6 @@ class _LoginScreen1State extends State<LoginScreen1> {
         ),
       );
     } else if (authProvider.currentUser != null) {
-      context.read<PreferencesProvider>().saveTab(0);
       ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -272,7 +271,6 @@ class _LoginScreen2State extends State<LoginScreen2> {
         SnackBar(content: Text(authProvider.error ?? 'Sign up failed')),
       );
     } else {
-      context.read<PreferencesProvider>().saveTab(0);
       if (mounted) {
         Navigator.pop(context);
       }

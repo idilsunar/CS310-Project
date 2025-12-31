@@ -93,12 +93,10 @@ class _HomeScreenState extends State<HomeScreen> {
       if (authProvider.currentUser != null) {
         habitProvider.loadHabits(authProvider.currentUser!.uid);
         await _loadTodayCompletions(authProvider.currentUser!.uid);
+        await prefsProvider.loadUserPreferences(authProvider.currentUser!.uid);
       }
 
       if (!mounted) return;
-      setState(() {
-        _selectedIndex = prefsProvider.lastSelectedTab;
-      });
 
       _noteController.text = prefsProvider.dailyNote;
     });
@@ -169,6 +167,32 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  Future<void> _resetHabitCompletion(
+      String userId,
+      String habitId,
+      DateTime date,
+      ) async {
+    try {
+      await _completionRepo.deleteHabitCompletion(userId, habitId, date);
+      await _loadTodayCompletions(userId);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Habit reset!'),
+            duration: Duration(seconds: 2),
+            backgroundColor: Colors.grey,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: $e')),
+        );
+      }
+    }
+  }
+
   Widget _buildQuickMarkDialog(Habit habit) {
     return Dialog(
       shape: RoundedRectangleBorder(
@@ -204,6 +228,8 @@ class _HomeScreenState extends State<HomeScreen> {
             _buildStatusButton('Partially Done 🟡', 'partial', Colors.orange),
             const SizedBox(height: 12),
             _buildStatusButton('Missed ❌', 'missed', Colors.red),
+            const SizedBox(height: 12),
+            _buildStatusButton('Reset 🔄', 'reset', Colors.grey),
             const SizedBox(height: 16),
             TextButton(
               onPressed: () => Navigator.pop(context),
@@ -378,56 +404,99 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   const SizedBox(height: 22),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? Colors.grey.shade800.withValues(alpha: 0.6)
-                          : Colors.white,
-                      borderRadius: BorderRadius.circular(18),
-                      border: Border.all(
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? Colors.grey.shade700
-                            : Colors.grey.shade300,
-                        width: 1.5,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.04),
-                          blurRadius: 10,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: TextField(
-                      controller: _noteController,
-                      maxLines: 3,
-                      onChanged: (val) {
-                        context.read<PreferencesProvider>().saveDailyNote(val);
-                      },
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? Colors.white
-                            : Colors.black87,
-                        height: 1.4,
-                      ),
-                      decoration: InputDecoration(
-                        labelText: 'Note for today:',
-                        labelStyle: TextStyle(
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                        decoration: BoxDecoration(
                           color: Theme.of(context).brightness == Brightness.dark
-                              ? Colors.grey.shade400
-                              : Colors.grey.shade600,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14,
+                              ? AppColors.navyBlue.withValues(alpha: 0.3)
+                              : AppColors.turquoise.withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: Theme.of(context).brightness == Brightness.dark
+                                ? AppColors.navyBlue.withValues(alpha: 0.5)
+                                : AppColors.turquoise.withValues(alpha: 0.3),
+                            width: 1.5,
+                          ),
                         ),
-                        alignLabelWithHint: true,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(18),
-                          borderSide: BorderSide.none,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.edit_note_rounded,
+                              size: 18,
+                              color: Theme.of(context).brightness == Brightness.dark
+                                  ? AppColors.turquoise
+                                  : AppColors.navyBlue,
+                            ),
+                            const SizedBox(width: 6),
+                            Text(
+                              'Note for today',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: Theme.of(context).brightness == Brightness.dark
+                                    ? AppColors.turquoise
+                                    : AppColors.navyBlue,
+                                letterSpacing: 0.3,
+                              ),
+                            ),
+                          ],
                         ),
-                        contentPadding: const EdgeInsets.all(18),
                       ),
-                    ),
+                      const SizedBox(height: 10),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.grey.shade800.withValues(alpha: 0.6)
+                              : Colors.white,
+                          borderRadius: BorderRadius.circular(18),
+                          border: Border.all(
+                            color: Theme.of(context).brightness == Brightness.dark
+                                ? Colors.grey.shade700
+                                : Colors.grey.shade300,
+                            width: 1.5,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.04),
+                              blurRadius: 10,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: TextField(
+                          controller: _noteController,
+                          maxLines: 3,
+                          onChanged: (val) {
+                            context.read<PreferencesProvider>().saveDailyNote(val);
+                          },
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Theme.of(context).brightness == Brightness.dark
+                                ? Colors.white
+                                : Colors.black87,
+                            height: 1.4,
+                          ),
+                          decoration: InputDecoration(
+                            hintText: "What's on your mind today? Write a reminder, intention, or thought you'd like to return to...",
+                            hintStyle: TextStyle(
+                              color: Theme.of(context).brightness == Brightness.dark
+                                  ? Colors.grey.shade600
+                                  : Colors.grey.shade400,
+                              fontSize: 14,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(18),
+                              borderSide: BorderSide.none,
+                            ),
+                            contentPadding: const EdgeInsets.all(18),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -624,12 +693,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                   if (result != null && mounted) {
                                     final userId = authProvider.currentUser?.uid;
                                     if (userId != null) {
-                                      await _markHabitCompletion(
-                                        userId,
-                                        habit.id,
-                                        DateTime.now(),
-                                        _statusFromString(result),
-                                      );
+                                      if (result == 'reset') {
+                                        await _resetHabitCompletion(userId, habit.id, DateTime.now());
+                                      } else {
+                                        await _markHabitCompletion(
+                                          userId,
+                                          habit.id,
+                                          DateTime.now(),
+                                          _statusFromString(result),
+                                        );
+                                      }
 
                                       if (!mounted) return;
                                       final achievementsProvider = context.read<AchievementsProvider>();
@@ -649,20 +722,41 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               const SizedBox(width: 16),
                               Expanded(
-                                child: Text(
-                                  habit.name,
-                                  style: TextStyle(
-                                    color: Theme.of(context).brightness == Brightness.dark
-                                        ? Colors.white
-                                        : AppColors.textDark,
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w600,
-                                    decoration: completionStatus == CompletionStatus.completed 
-                                        ? TextDecoration.lineThrough 
-                                        : null,
-                                    decorationColor: Colors.grey,
-                                    decorationThickness: 2,
-                                  ),
+                                child: Row(
+                                  children: [
+                                    Flexible(
+                                      child: Text(
+                                        habit.name,
+                                        style: TextStyle(
+                                          color: Theme.of(context).brightness == Brightness.dark
+                                              ? Colors.white
+                                              : AppColors.textDark,
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w600,
+                                          decoration: completionStatus == CompletionStatus.completed 
+                                              ? TextDecoration.lineThrough 
+                                              : null,
+                                          decorationColor: Colors.grey,
+                                          decorationThickness: 2,
+                                        ),
+                                      ),
+                                    ),
+                                    if (habit.hasReminder && habit.reminderDays != null && habit.reminderDays!.any((day) => day)) ...[
+                                      const SizedBox(width: 8),
+                                      Container(
+                                        padding: const EdgeInsets.all(4),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.turquoise.withValues(alpha: 0.15),
+                                          borderRadius: BorderRadius.circular(6),
+                                        ),
+                                        child: Icon(
+                                          Icons.notifications_active,
+                                          size: 16,
+                                          color: AppColors.turquoise,
+                                        ),
+                                      ),
+                                    ],
+                                  ],
                                 ),
                               ),
                               IconButton(

@@ -1,66 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/reminder_provider.dart';
-import '../providers/auth_provider.dart';
-import '../models/reminder.dart';
+import '../providers/preferences_provider.dart';
 import '../utils/app_colors.dart';
 
-class ReminderSettingScreen extends StatefulWidget {
+class ReminderSettingScreen extends StatelessWidget {
   const ReminderSettingScreen({super.key});
 
   @override
-  State<ReminderSettingScreen> createState() => _ReminderSettingScreenState();
-}
-
-class _ReminderSettingScreenState extends State<ReminderSettingScreen> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final auth = context.read<AuthProvider>();
-      final reminderProvider = context.read<ReminderProvider>();
-      if (auth.currentUser != null) {
-        reminderProvider.loadReminder(auth.currentUser!.uid);
-      }
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final provider = context.watch<ReminderProvider>();
-    final auth = context.read<AuthProvider>();
+    final prefsProvider = context.watch<PreferencesProvider>();
     final isDark = Theme.of(context).brightness == Brightness.dark;
-
-    if (provider.isLoading) {
-      return Scaffold(
-        appBar: AppBar(
-          title: const Text("Reminder Settings"),
-          centerTitle: true,
-        ),
-        body: const Center(child: CircularProgressIndicator()),
-      );
-    }
-
-    final reminder = provider.reminder ??
-        Reminder(
-          habit: "Reading",
-          time: "08:00",
-          days: List.generate(7, (_) => false),
-        );
-
-    final days = [
-      {"label": "M", "full": "Mon"},
-      {"label": "T", "full": "Tue"},
-      {"label": "W", "full": "Wed"},
-      {"label": "T", "full": "Thu"},
-      {"label": "F", "full": "Fri"},
-      {"label": "S", "full": "Sat"},
-      {"label": "S", "full": "Sun"},
-    ];
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Reminder Settings"),
+        title: const Text("Notifications"),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -69,255 +22,164 @@ class _ReminderSettingScreenState extends State<ReminderSettingScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
+                color: isDark ? const Color(0xFF1E2A3A) : Colors.white,
                 borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
+                border: Border.all(
+                  color: isDark ? const Color(0xFF2A3F5F) : Colors.grey.shade300,
+                  width: 1.5,
+                ),
+                boxShadow: isDark
+                    ? []
+                    : [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.05),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
                 children: [
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: AppColors.turquoise.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Icon(
-                          Icons.fitness_center,
-                          color: AppColors.turquoise,
-                          size: 20,
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      const Text(
-                        "Habit Type",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
                   Container(
+                    padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF2A2A2A) : Colors.grey[50],
+                      color: isDark
+                          ? AppColors.turquoise.withValues(alpha: 0.2)
+                          : AppColors.turquoise.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: DropdownButtonFormField<String>(
-                      value: reminder.habit,
-                      decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                        border: InputBorder.none,
-                      ),
-                      dropdownColor: isDark ? const Color(0xFF2A2A2A) : Colors.white,
-                      items: [
-                        {"name": "Reading", "icon": Icons.menu_book},
-                        {"name": "Workout", "icon": Icons.fitness_center},
-                        {"name": "Study", "icon": Icons.school},
-                        {"name": "Meditation", "icon": Icons.self_improvement},
-                      ].map((e) => DropdownMenuItem(
-                        value: e["name"] as String,
-                        child: Row(
-                          children: [
-                            Icon(e["icon"] as IconData, size: 20, color: AppColors.turquoise),
-                            const SizedBox(width: 12),
-                            Text(e["name"] as String),
-                          ],
-                        ),
-                      )).toList(),
-                      onChanged: (v) {
-                        provider.saveReminder(
-                          reminder.copyWith(habit: v!),
-                          auth.currentUser!.uid,
-                        );
-                      },
+                    child: Icon(
+                      Icons.notifications_active,
+                      color: AppColors.turquoise,
+                      size: 28,
                     ),
                   ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 20),
-
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Enable Notifications",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: isDark ? Colors.white : Colors.black87,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          "Allow habit reminders",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: AppColors.peach.withOpacity(0.3),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Icon(
-                          Icons.access_time,
-                          color: AppColors.peach,
-                          size: 20,
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      const Text(
-                        "Reminder Time",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  InkWell(
-                    onTap: () async {
-                      final picked = await showTimePicker(
-                        context: context,
-                        initialTime: TimeOfDay.now(),
-                      );
-                      if (picked != null) {
-                        provider.saveReminder(
-                          reminder.copyWith(time: picked.format(context)),
-                          auth.currentUser!.uid,
-                        );
-                      }
+                  Switch(
+                    value: prefsProvider.notificationsEnabled,
+                    onChanged: (value) {
+                      prefsProvider.setNotificationsEnabled(value);
                     },
-                    borderRadius: BorderRadius.circular(12),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-                      decoration: BoxDecoration(
-                        color: isDark ? const Color(0xFF2A2A2A) : Colors.grey[50],
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.alarm, color: AppColors.peach, size: 28),
-                          const SizedBox(width: 12),
-                          Text(
-                            reminder.time,
-                            style: const TextStyle(
-                              fontSize: 32,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 1,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    activeColor: AppColors.turquoise,
                   ),
                 ],
               ),
             ),
-
-            const SizedBox(height: 20),
-
+            
+            const SizedBox(height: 24),
+            
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
+                color: isDark
+                    ? AppColors.turquoise.withValues(alpha: 0.1)
+                    : AppColors.turquoise.withValues(alpha: 0.05),
                 borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
+                border: Border.all(
+                  color: AppColors.turquoise.withValues(alpha: 0.3),
+                  width: 1.5,
+                ),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: Colors.green.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Icon(
-                          Icons.calendar_today,
-                          color: Colors.green,
-                          size: 20,
-                        ),
+                      Icon(
+                        Icons.info_outline,
+                        color: AppColors.turquoise,
+                        size: 24,
                       ),
                       const SizedBox(width: 12),
-                      const Text(
-                        "Repeat Days",
+                      Text(
+                        "How it works",
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
+                          color: isDark ? Colors.white : AppColors.navyBlue,
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: List.generate(7, (i) {
-                      final isSelected = reminder.days[i];
-                      return GestureDetector(
-                        onTap: () {
-                          final updatedDays = List<bool>.from(reminder.days);
-                          updatedDays[i] = !updatedDays[i];
-                          provider.saveReminder(
-                            reminder.copyWith(days: updatedDays),
-                            auth.currentUser!.uid,
-                          );
-                        },
-                        child: Container(
-                          width: 44,
-                          height: 44,
-                          decoration: BoxDecoration(
-                            color: isSelected
-                                ? AppColors.turquoise
-                                : (isDark ? const Color(0xFF2A2A2A) : Colors.grey[100]),
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: isSelected
-                                  ? AppColors.turquoise
-                                  : (isDark ? Colors.grey[700]! : Colors.grey[300]!),
-                              width: 2,
-                            ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              days[i]["label"]!,
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: isSelected
-                                    ? Colors.white
-                                    : (isDark ? Colors.grey[400] : Colors.grey[700]),
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    }),
+                  _buildInfoItem(
+                    isDark,
+                    Icons.edit,
+                    "Set reminders per habit",
+                    "Open any habit details to configure its reminder time and days",
+                  ),
+                  const SizedBox(height: 12),
+                  _buildInfoItem(
+                    isDark,
+                    Icons.schedule,
+                    "Custom schedules",
+                    "Each habit can have its own reminder time and repeat days",
+                  ),
+                  const SizedBox(height: 12),
+                  _buildInfoItem(
+                    isDark,
+                    Icons.notification_important,
+                    "Stay on track",
+                    "Get notified at the right time to complete your habits",
+                  ),
+                ],
+              ),
+            ),
+            
+            const SizedBox(height: 24),
+            
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: isDark ? const Color(0xFF1E2A3A) : Colors.grey.shade50,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: isDark ? const Color(0xFF2A3F5F) : Colors.grey.shade300,
+                  width: 1.5,
+                ),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.lightbulb_outline,
+                    color: AppColors.peach,
+                    size: 24,
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      "Tip: Look for the bell icon next to habits with active reminders on your home screen",
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: isDark ? Colors.grey.shade400 : Colors.grey.shade700,
+                        height: 1.4,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -325,6 +187,51 @@ class _ReminderSettingScreenState extends State<ReminderSettingScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildInfoItem(bool isDark, IconData icon, String title, String description) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: AppColors.turquoise.withValues(alpha: 0.2),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Icon(
+            icon,
+            size: 18,
+            color: AppColors.turquoise,
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: isDark ? Colors.white : Colors.black87,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                description,
+                style: TextStyle(
+                  fontSize: 13,
+                  color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                  height: 1.3,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
