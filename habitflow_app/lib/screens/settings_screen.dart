@@ -224,8 +224,9 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer2<AuthProvider, PreferencesProvider>(
       builder: (context, auth, prefs, _) {
-        final content = Column(
-          children: [
+        final content = SafeArea(
+          child: Column(
+            children: [
             Container(
               width: double.infinity,
               padding: const EdgeInsets.fromLTRB(24, 32, 24, 24),
@@ -249,7 +250,23 @@ class SettingsScreen extends StatelessWidget {
                     backgroundColor: Theme.of(context).brightness == Brightness.dark
                         ? AppColors.turquoise.withValues(alpha: 0.3)
                         : AppColors.turquoise.withOpacity(0.2),
-                    child: const Icon(Icons.person, size: 32, color: AppColors.turquoise),
+                    child: ClipOval(
+                      child: Image.network(
+                        'https://ui-avatars.com/api/?name=${Uri.encodeComponent(auth.currentUser?.email?.split('@')[0] ?? "User")}&background=5DBED1&color=fff&size=128',
+                        width: 64,
+                        height: 64,
+                        fit: BoxFit.cover,
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return const Center(
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          );
+                        },
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Icon(Icons.person, size: 32, color: AppColors.turquoise);
+                        },
+                      ),
+                    ),
                   ),
                   const SizedBox(width: 16),
                   Expanded(
@@ -295,12 +312,7 @@ class SettingsScreen extends StatelessWidget {
                   Icons.notifications,
                   "Reminder Settings",
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const ReminderSettingScreen(),
-                      ),
-                    );
+                    Navigator.pushNamed(context, '/reminderSettings');
                   },
                 ),
                 Container(
@@ -389,6 +401,7 @@ class SettingsScreen extends StatelessWidget {
               ),
             ),
           ],
+        ),
         );
 
         if (!showAppBar) return content;

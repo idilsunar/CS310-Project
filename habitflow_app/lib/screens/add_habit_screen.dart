@@ -131,14 +131,34 @@ class _AddHabitScreenState extends State<AddHabitScreen> {
                         createdAt: DateTime.now(),
                       );
 
-                      Navigator.pop(context, newHabit);
+                      showDialog(
+                        context: context,
+                        builder: (_) => AlertDialog(
+                          title: const Text('Success'),
+                          content: Text('Habit "$_name" created successfully!'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                                Navigator.pop(context, newHabit);
+                              },
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        ),
+                      );
                     } else {
                       showDialog(
                         context: context,
-                        builder: (_) => const AlertDialog(
-                          title: Text('Form error'),
-                          content:
-                          Text('Please fix the errors shown in the form.'),
+                        builder: (_) => AlertDialog(
+                          title: const Text('Form error'),
+                          content: const Text('Please fix the errors shown in the form.'),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: const Text('OK'),
+                            ),
+                          ],
                         ),
                       );
                     }

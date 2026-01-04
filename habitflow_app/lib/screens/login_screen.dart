@@ -68,9 +68,6 @@ class _LoginScreen1State extends State<LoginScreen1> {
           duration: Duration(seconds: 2),
         ),
       );
-      if (mounted && Navigator.canPop(context)) {
-        Navigator.pop(context);
-      }
     } else {
       ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(context).showSnackBar(
@@ -189,10 +186,7 @@ class _LoginScreen1State extends State<LoginScreen1> {
                         const SizedBox(height: 16),
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const LoginScreen2()),
-                            );
+                            Navigator.pushNamed(context, '/signup');
                           },
                           child: RichText(
                             text: const TextSpan(
@@ -271,9 +265,12 @@ class _LoginScreen2State extends State<LoginScreen2> {
         SnackBar(content: Text(authProvider.error ?? 'Sign up failed')),
       );
     } else {
-      if (mounted) {
-        Navigator.pop(context);
-      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Account created successfully!'),
+          duration: Duration(seconds: 2),
+        ),
+      );
     }
   }
 

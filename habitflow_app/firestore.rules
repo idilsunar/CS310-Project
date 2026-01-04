@@ -1,0 +1,65 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    match /habits/{habitId} {
+      allow read: if isAuthenticated() && 
+                     resource.data.createdBy == request.auth.uid;
+      
+      allow create: if isAuthenticated() && 
+                       request.resource.data.createdBy == request.auth.uid &&
+                       request.resource.data.keys().hasAll(['name', 'category', 'frequency', 'createdBy', 'createdAt']);
+      
+      allow update: if isAuthenticated() && 
+                       resource.data.createdBy == request.auth.uid &&
+                       request.resource.data.createdBy == request.auth.uid;
+      
+      allow delete: if isAuthenticated() && 
+                       resource.data.createdBy == request.auth.uid;
+    }
+    
+    match /habitCompletions/{completionId} {
+      allow read: if isAuthenticated() && 
+                     resource.data.userId == request.auth.uid;
+      
+      allow create: if isAuthenticated() && 
+                       request.resource.data.userId == request.auth.uid &&
+                       request.resource.data.keys().hasAll(['habitId', 'userId', 'date', 'status', 'createdAt']);
+      
+      allow update: if isAuthenticated() && 
+                       resource.data.userId == request.auth.uid &&
+                       request.resource.data.userId == request.auth.uid;
+      
+      allow delete: if isAuthenticated() && 
+                       resource.data.userId == request.auth.uid;
+    }
+    
+    match /reminders/{reminderId} {
+      allow read: if isAuthenticated() && 
+                     resource.data.userId == request.auth.uid;
+      
+      allow create: if isAuthenticated() && 
+                       request.resource.data.userId == request.auth.uid;
+      
+      allow update: if isAuthenticated() && 
+                       resource.data.userId == request.auth.uid &&
+                       request.resource.data.userId == request.auth.uid;
+      
+      allow delete: if isAuthenticated() && 
+                       resource.data.userId == request.auth.uid;
+    }
+    
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
+

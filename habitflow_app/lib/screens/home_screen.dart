@@ -111,10 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _addHabit() async {
     final authProvider = context.read<AuthProvider>();
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const AddHabitScreen()),
-    );
+    final result = await Navigator.pushNamed(context, '/addHabit');
 
     if (!mounted) return;
 
@@ -433,7 +430,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             const SizedBox(width: 6),
                             Text(
-                              'Note for today',
+                              'Daily Journal',
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,

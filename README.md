@@ -62,6 +62,40 @@ The app uses Firebase for user authentication and data storage. We've already in
 1. Download `GoogleService-Info.plist` from your Firebase console
 2. Place it in `ios/Runner/`
 
+#### For Web:
+Web support is now configured via `lib/firebase_options.dart`
+
+#### Firestore Security Rules
+
+**IMPORTANT:** Deploy the security rules to protect your data:
+
+1. Install Firebase CLI if not already installed:
+```bash
+npm install -g firebase-tools
+```
+
+2. Login to Firebase:
+```bash
+firebase login
+```
+
+3. Initialize Firebase in the project (if not already done):
+```bash
+cd habitflow_app
+firebase init firestore
+```
+Select your Firebase project and use the existing `firestore.rules` file.
+
+4. Deploy the security rules:
+```bash
+firebase deploy --only firestore:rules
+```
+
+The rules ensure:
+- Users must be authenticated to access data
+- Users can only read/write their own habits and completions
+- Data structure is validated on writes
+
 ### Step 4: Run the App
 
 For Android:

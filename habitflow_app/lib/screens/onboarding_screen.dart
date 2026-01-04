@@ -63,10 +63,7 @@ class OnboardingPage1 extends StatelessWidget {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const OnboardingPage2()),
-                      );
+                      Navigator.pushNamed(context, '/onboarding2');
                     },
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
@@ -147,10 +144,7 @@ class OnboardingPage2 extends StatelessWidget {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const OnboardingPage3()),
-                      );
+                      Navigator.pushNamed(context, '/onboarding3');
                     },
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
@@ -231,10 +225,7 @@ class OnboardingPage3 extends StatelessWidget {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const OnboardingPage4()),
-                      );
+                      Navigator.pushNamed(context, '/onboarding4');
                     },
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
@@ -317,10 +308,7 @@ class OnboardingPage4 extends StatelessWidget {
                     onPressed: () async {
                       await context.read<PreferencesProvider>().setOnboardingComplete(true);
                       if (!context.mounted) return;
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => const LoginScreen1()),
-                      );
+                      Navigator.pushReplacementNamed(context, '/login');
                     },
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(

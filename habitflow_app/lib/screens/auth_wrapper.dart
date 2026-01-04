@@ -14,14 +14,14 @@ class AuthWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer2<AuthProvider, PreferencesProvider>(
       builder: (context, authProvider, prefsProvider, _) {
+        if (authProvider.currentUser != null) {
+          return const HomeScreen();
+        }
+
         if (prefsProvider.isLoading) {
           return const Scaffold(
             body: Center(child: CircularProgressIndicator()),
           );
-        }
-
-        if (authProvider.currentUser != null) {
-          return const HomeScreen();
         }
 
         if (prefsProvider.hasCompletedOnboarding) {

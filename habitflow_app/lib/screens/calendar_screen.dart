@@ -105,37 +105,35 @@ class _CalendarScreenState extends State<CalendarScreen> {
       case CompletionStatus.completed:
         return Colors.green;
       case CompletionStatus.partial:
-        return Colors.yellow;
+        return Colors.orange;
       case CompletionStatus.missed:
         return Colors.red;
     }
   }
 
   List<DateTime> _getDaysInMonth(DateTime month) {
+    final firstDay = DateTime(month.year, month.month, 1);
     final lastDay = DateTime(month.year, month.month + 1, 0);
-    return List.generate(
-      lastDay.day,
-          (index) => DateTime(month.year, month.month, index + 1),
-    );
-  }
-
-  Widget _buildDot(Color color) {
-    return Container(
-      width: 12,
-      height: 12,
-      margin: const EdgeInsets.symmetric(horizontal: 2),
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: color,
-        boxShadow: [
-          BoxShadow(
-            color: color.withValues(alpha: 0.4),
-            blurRadius: 2,
-            spreadRadius: 1,
-          ),
-        ],
-      ),
-    );
+    
+    final startWeekday = firstDay.weekday;
+    final daysFromPreviousMonth = startWeekday - 1;
+    
+    final List<DateTime> days = [];
+    
+    for (int i = daysFromPreviousMonth; i > 0; i--) {
+      days.add(firstDay.subtract(Duration(days: i)));
+    }
+    
+    for (int i = 1; i <= lastDay.day; i++) {
+      days.add(DateTime(month.year, month.month, i));
+    }
+    
+    final remainingDays = 42 - days.length;
+    for (int i = 1; i <= remainingDays; i++) {
+      days.add(lastDay.add(Duration(days: i)));
+    }
+    
+    return days;
   }
 
   void _showDayDetails(
@@ -269,6 +267,178 @@ class _CalendarScreenState extends State<CalendarScreen> {
     );
   }
 
+  Widget _buildCalendarGrid(
+      DateTime month,
+      Map<String, List<HabitCompletion>> completionsByDate,
+      List<Habit> userHabits,
+      ThemeData theme,
+      bool isDark,
+      ) {
+    final daysInMonth = _getDaysInMonth(month);
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                .map((day) => SizedBox(
+              width: 40,
+              child: Text(
+                day,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                  color: theme.colorScheme.onSurface.withOpacity(0.7),
+                ),
+              ),
+            ))
+                .toList(),
+          ),
+        ),
+        Expanded(
+          child: GridView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 7,
+              childAspectRatio: 0.8,
+              crossAxisSpacing: 4,
+              mainAxisSpacing: 4,
+            ),
+            itemCount: daysInMonth.length,
+            itemBuilder: (context, index) {
+              final date = daysInMonth[index];
+              final isCurrentMonth = date.month == month.month;
+              final isToday = date.year == today.year &&
+                  date.month == today.month &&
+                  date.day == today.day;
+              final dateKey = '${date.year}-${date.month}-${date.day}';
+              final dayCompletions = completionsByDate[dateKey] ?? [];
+              final totalHabits = userHabits.length;
+              final completedCount = dayCompletions
+                  .where((c) => c.status == CompletionStatus.completed)
+                  .length;
+              
+              Color? cellColor;
+              if (isCurrentMonth && dayCompletions.isNotEmpty) {
+                final percentage = totalHabits > 0 ? completedCount / totalHabits : 0;
+                if (percentage == 1.0) {
+                  cellColor = Colors.green.withOpacity(0.3);
+                } else if (percentage >= 0.5) {
+                  cellColor = Colors.orange.withOpacity(0.3);
+                } else if (percentage > 0) {
+                  cellColor = Colors.yellow.withOpacity(0.3);
+                } else {
+                  cellColor = Colors.red.withOpacity(0.2);
+                }
+              }
+
+              return InkWell(
+                onTap: isCurrentMonth
+                    ? () => _showDayDetails(context, date, dayCompletions, userHabits)
+                    : null,
+                borderRadius: BorderRadius.circular(8),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: cellColor,
+                    border: isToday
+                        ? Border.all(color: AppColors.turquoise, width: 2)
+                        : Border.all(
+                      color: isDark
+                          ? theme.colorScheme.outline.withOpacity(0.2)
+                          : Colors.grey.shade300,
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '${date.day}',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: isToday ? FontWeight.bold : FontWeight.normal,
+                          color: !isCurrentMonth
+                              ? theme.colorScheme.onSurface.withOpacity(0.3)
+                              : theme.colorScheme.onSurface,
+                        ),
+                      ),
+                      if (isCurrentMonth && dayCompletions.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4),
+                          child: Text(
+                            '$completedCount/$totalHabits',
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: theme.colorScheme.onSurface.withOpacity(0.7),
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: isDark
+                ? theme.colorScheme.surface.withOpacity(0.5)
+                : Colors.grey.shade50,
+            border: Border(
+              top: BorderSide(
+                color: isDark
+                    ? theme.colorScheme.outline.withOpacity(0.2)
+                    : Colors.grey.shade200,
+              ),
+            ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _buildLegendItem('All Done', Colors.green.withOpacity(0.3), theme),
+              _buildLegendItem('Most Done', Colors.orange.withOpacity(0.3), theme),
+              _buildLegendItem('Some Done', Colors.yellow.withOpacity(0.3), theme),
+              _buildLegendItem('None Done', Colors.red.withOpacity(0.2), theme),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLegendItem(String label, Color color, ThemeData theme) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 16,
+          height: 16,
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(4),
+            border: Border.all(color: Colors.grey.shade400),
+          ),
+        ),
+        const SizedBox(width: 4),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 10,
+            color: theme.colorScheme.onSurface,
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -281,7 +451,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
       return const Center(child: Text('Please login to view calendar'));
     }
 
-    final content = Column(
+    final content = SafeArea(
+      child: Column(
       children: [
         Container(
           padding: const EdgeInsets.all(16),
@@ -351,7 +522,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   }
 
                   final completions = completionSnapshot.data ?? [];
-                  final daysInMonth = _getDaysInMonth(monthForPage);
                   final userHabits = habitProvider.habits;
 
                   final Map<String, List<HabitCompletion>> completionsByDate = {};
@@ -361,180 +531,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     completionsByDate[dateKey]!.add(completion);
                   }
 
-                  return Column(
-                    children: [
-                      Expanded(
-                        child: ListView.builder(
-                          padding: const EdgeInsets.all(16),
-                          itemCount: daysInMonth.length,
-                          itemBuilder: (context, index) {
-                            final date = daysInMonth[index];
-                            final dateKey = '${date.year}-${date.month}-${date.day}';
-                            final dayCompletions = completionsByDate[dateKey] ?? [];
-                            final totalHabits = userHabits.length;
-                            final completedCount = dayCompletions
-                                .where((c) => c.status == CompletionStatus.completed)
-                                .length;
-
-                            return InkWell(
-                              onTap: () => _showDayDetails(context, date, dayCompletions, userHabits),
-                              child: Container(
-                                margin: const EdgeInsets.only(bottom: 12),
-                                padding: const EdgeInsets.all(16),
-                                decoration: BoxDecoration(
-                                  color: isDark
-                                      ? theme.colorScheme.surface
-                                      : theme.colorScheme.surface,
-                                  borderRadius: BorderRadius.circular(12),
-                                  border: isDark 
-                                      ? Border.all(color: theme.colorScheme.outline.withOpacity(0.2))
-                                      : null,
-                                  boxShadow: isDark ? null : [
-                                    BoxShadow(
-                                      color: Colors.black.withValues(alpha: 0.05),
-                                      blurRadius: 4,
-                                      offset: const Offset(0, 2),
-                                    ),
-                                  ],
-                                ),
-                                child: Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 120,
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            width: 32,
-                                            height: 32,
-                                            alignment: Alignment.center,
-                                            decoration: BoxDecoration(
-                                              color: isDark
-                                                  ? theme.colorScheme.primaryContainer
-                                                  : AppColors.lightTurquoise.withOpacity(0.3),
-                                              borderRadius: BorderRadius.circular(8),
-                                            ),
-                                            child: Text(
-                                              '${date.day}',
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                                color: isDark
-                                                    ? theme.colorScheme.onPrimaryContainer
-                                                    : AppColors.navyBlue,
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(width: 8),
-                                          Expanded(
-                                            child: Text(
-                                              _getDayName(date),
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                                color: theme.colorScheme.onSurface,
-                                              ),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Wrap(
-                                        spacing: 4,
-                                        children: dayCompletions.isEmpty
-                                            ? [_buildDot(theme.colorScheme.outline.withOpacity(0.3))]
-                                            : dayCompletions
-                                            .map((c) => _buildDot(_getStatusColor(c.status)))
-                                            .toList(),
-                                      ),
-                                    ),
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                                      decoration: BoxDecoration(
-                                        color: isDark
-                                            ? theme.colorScheme.secondaryContainer
-                                            : AppColors.lightPeach.withOpacity(0.5),
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      child: Text(
-                                        '$completedCount/$totalHabits',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 14,
-                                          color: isDark
-                                              ? theme.colorScheme.onSecondaryContainer
-                                              : AppColors.navyBlue,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: isDark
-                              ? theme.colorScheme.surface.withOpacity(0.5)
-                              : Colors.grey.shade50,
-                          border: Border(
-                            top: BorderSide(
-                              color: isDark
-                                  ? theme.colorScheme.outline.withOpacity(0.2)
-                                  : Colors.grey.shade200,
-                            ),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Row(
-                              children: [
-                                _buildDot(Colors.green),
-                                const SizedBox(width: 6),
-                                Text(
-                                  "Complete",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: theme.colorScheme.onSurface,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                _buildDot(Colors.yellow),
-                                const SizedBox(width: 6),
-                                Text(
-                                  "Partial",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: theme.colorScheme.onSurface,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                _buildDot(Colors.red),
-                                const SizedBox(width: 6),
-                                Text(
-                                  "Missed",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: theme.colorScheme.onSurface,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                    return _buildCalendarGrid(
+                      monthForPage,
+                      completionsByDate,
+                      userHabits,
+                      theme,
+                      isDark,
                   );
                 },
               );
@@ -542,6 +544,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
           ),
         ),
       ],
+      ),
     );
 
     if (widget.showAppBar) {

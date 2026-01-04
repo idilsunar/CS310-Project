@@ -96,12 +96,7 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
                   width: double.infinity,
                   child: ElevatedButton.icon(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const BadgesScreen(),
-                        ),
-                      );
+                      Navigator.pushNamed(context, '/badges');
                     },
                     icon: const Icon(Icons.emoji_events_outlined, size: 24),
                     label: const Text(
@@ -128,12 +123,7 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
                   width: double.infinity,
                   child: OutlinedButton.icon(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const ProgressPageScreen(),
-                        ),
-                      );
+                      Navigator.pushNamed(context, '/progress');
                     },
                     icon: const Icon(Icons.trending_up, size: 24),
                     label: const Text(
