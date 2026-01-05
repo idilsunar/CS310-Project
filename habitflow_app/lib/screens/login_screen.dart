@@ -271,8 +271,7 @@ class _LoginScreen2State extends State<LoginScreen2> {
           duration: Duration(seconds: 2),
         ),
       );
-      // Navigate to home and remove all previous routes
-      Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+      Navigator.pop(context);
     }
   }
 
